@@ -4,29 +4,50 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <time.h>
-#include <stdbool.h> // For boolean type
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <signal.h>
 
+#define MAX_VERS 100
 #define MAX_VERS_LENGTH 100
-#define PIPE_READ_END 0
-#define PIPE_WRITE_END 1
-#define MAX_POEM_COUNT 100
-char used_verses[MAX_POEM_COUNT][MAX_VERS_LENGTH] = {""}; // Initialize all elements to empty strings
-int used_verse_count = 0;
 
-// Check if a verse has been used
-bool isVerseUsed(const char *verse) {
-    for (int i = 0; i < used_verse_count; ++i) {
-        if (strcmp(used_verses[i], verse) == 0) {
-            return true;
-        }
+int pipefd[2];
+char vers[MAX_VERS][MAX_VERS_LENGTH];
+int vers_count;
+
+int pipe_ready = 0;
+int signal_received = 0;
+
+void signal_handler(int signum) {
+    int index1 = rand() % vers_count;
+    int index2 = rand() % vers_count;
+    write(pipefd[1], &index1, sizeof(index1));
+    write(pipefd[1], vers[index1], MAX_VERS_LENGTH);
+    write(pipefd[1], &index2, sizeof(index2));
+    write(pipefd[1], vers[index2], MAX_VERS_LENGTH);
+}
+
+/*int findPoemIndex(const char *filename, const char *poem) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error: Failed to open the file for reading!\n");
+        return -1;
     }
-    return false;
-}
 
-// Mark a verse as used
-void markVerseAsUsed(const char *verse) {
-    strcpy(used_verses[used_verse_count++], verse);
-}
+    char poems[MAX_VERS][MAX_VERS_LENGTH];
+    int count = 0;
+    while (fgets(poems[count], sizeof(poems[count]), file) != NULL) {
+        if (strcmp(poems[count], poem) == 0) {
+            fclose(file);
+            return count + 1; // +1 because the index in the file starts from 1
+        }
+        count++;
+    }
+
+    fclose(file);
+    return -1;
+}*/
 
 //Checks if the file exists
 int fileExists(const char *filename) {
@@ -147,75 +168,10 @@ void createFileOption(const char *filename) {
         fclose(file);
         printf("The file has been successfully created!\n");
     } else {
-        printf("Quitting...\n");
+        printf("Quiting...\n");
         exit(0);
     }
 }
-
-int selectRandomPoemIndex(const char *filename, int previous_index) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error: Failed to open the file for reading!\n");
-        return -1;
-    }
-    char poem[MAX_VERS_LENGTH];
-    int count = 0;
-    int valid_indices[MAX_VERS_LENGTH];
-    while (fgets(poem, sizeof(poem), file) != NULL) {
-        if (count != previous_index) {
-            valid_indices[count] = 1;
-        }
-        count++;
-    }
-    fclose(file);
-
-    if (count == 0) {
-        printf("Error: There are no poems in the file!\n");
-        return -1;
-    }
-
-    srand(time(NULL));
-    int random_index;
-    do {
-        random_index = rand() % count;
-    } while (valid_indices[random_index] != 1);
-
-    return random_index;
-}
-
-// Sends a signal to mama and receives two verses from her
-// Sends a signal to mama and receives two verses from her
-void communicateWithMama(const char *filename, char *verse1, char *verse2, int previous_index) {
-    int random_index1 = selectRandomPoemIndex(filename, previous_index);
-    if (random_index1 == -1) {
-        printf("Error: Communication with Mama failed!\n");
-        return;
-    }
-
-    int random_index2;
-    do {
-        random_index2 = selectRandomPoemIndex(filename, random_index1);
-    } while (random_index2 == -1 || random_index2 == random_index1);
-
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error: Failed to open the file for reading!\n");
-        return;
-    }
-    char poem[MAX_VERS_LENGTH];
-    int count = 0;
-    while (fgets(poem, sizeof(poem), file) != NULL) {
-        if (count == random_index1) {
-            strcpy(verse1, poem);
-        }
-        if (count == random_index2) {
-            strcpy(verse2, poem);
-        }
-        count++;
-    }
-    fclose(file);
-}
-
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -229,19 +185,27 @@ int main(int argc, char *argv[]) {
         createFileOption(filename);
     }
 
-    int choice, index;
-    char poem[MAX_VERS_LENGTH];
-    char verse1[MAX_VERS_LENGTH];
-    char verse2[MAX_VERS_LENGTH];
-    int previous_index = -1;
-    int pipefd[2]; // Pipe file descriptors
-
-    // Create pipe
-    if (pipe(pipefd) == -1) {
-        perror("Pipe creation failed");
-        return 1;
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error: Failed to open the file for reading!\n");
+        return -1;
     }
 
+    vers_count = 0;
+    while (fgets(vers[vers_count], sizeof(vers[vers_count]), file) != NULL) {
+        vers_count++;
+    }
+
+    fclose(file);
+
+    int choice, index;
+    char poem[MAX_VERS_LENGTH];
+    int sync_pipe[2];
+
+    struct msgbuf {
+        long mtype;
+        char mtext[MAX_VERS_LENGTH];
+    };
     do {
         printf("\n------------------\n");
         printf("1. Add new poem\n");
@@ -279,47 +243,71 @@ int main(int argc, char *argv[]) {
                 getchar(); // Flush input buffer
                 deletePoem(filename, index);
                 break;
-            case 5: {
-                pid_t pid = fork();
-                if (pid == 0) { // Child process for locsolás
-                    communicateWithMama(filename, verse1, verse2, previous_index);
-                    printf("Received verses from Mama:\n1. %s\n2. %s\n", verse1, verse2);
-                    printf("Selecting a verse...\n");
-                    srand(time(NULL));
-                    int selected_verse = rand() % 2;
-                    printf("Selected verse index: %d\n", selected_verse);
-                    // Write selected verse index to pipe
-                    write(pipefd[PIPE_WRITE_END], &selected_verse, sizeof(selected_verse));
-                    // Write selected verse to pipe
-                    write(pipefd[PIPE_WRITE_END], (selected_verse == 0) ? verse1 : verse2, MAX_VERS_LENGTH);
-                    exit(0); // Child process exits after locsolás
-                } else if (pid > 0) { // Parent process continues menu
-                    wait(NULL); // Wait for child process to finish
-                    int selected_verse_index;
-                    char selected_verse_text[MAX_VERS_LENGTH];
-                    // Read selected verse index from pipe
-                    read(pipefd[PIPE_READ_END], &selected_verse_index, sizeof(selected_verse_index));
-                    // Read selected verse from pipe
-                    read(pipefd[PIPE_READ_END], selected_verse_text, MAX_VERS_LENGTH);
-                    printf("Selected verse index: %d\n", selected_verse_index);
-                    printf("Selected verse: %s\n", selected_verse_text);
-                    if (!isVerseUsed(selected_verse_text)) {
-                        printf("\n\nSzabad-e locsolni!\n");
-                        printf("Locsolás...\n");
-                        printf("Returning home...\n");
-                        previous_index = selected_verse_index;
-                        markVerseAsUsed(selected_verse_text); // Mark selected verse as used
-                    } else {
-                        printf("The selected verse has already been used. Choose another verse!\n");
-                    }
-                } else {
-                    printf("Error: Fork failed!\n");
+            case 5:
+                srand(time(NULL));
+                int son = rand() % 4 + 1;
+                printf("Son %d is selected for sprinkling.\n", son);
+
+                if (pipe(pipefd) == -1) {
+                    perror("pipe");
+                    exit(EXIT_FAILURE);
                 }
+                
+                pid_t pid = fork();
+                
+                if (pid == -1) {
+                    perror("fork");
+                    exit(EXIT_FAILURE);
+                }
+
+
+                if (pid == 0) { // Child process
+                    kill(getppid(), SIGUSR1); // Send signal to parent
+
+                    int index1, index2;
+                    char rhyme1[MAX_VERS_LENGTH], rhyme2[MAX_VERS_LENGTH];
+                    read(pipefd[0], &index1, sizeof(index1));
+                    read(pipefd[0], rhyme1, MAX_VERS_LENGTH);
+                    read(pipefd[0], &index2, sizeof(index2));
+                    read(pipefd[0], rhyme2, MAX_VERS_LENGTH);
+                    printf("Received rhymes: %s, %s\n", rhyme1, rhyme2);
+
+                    int selectedIndex = rand() % 2 == 0 ? index1 : index2;
+                    char *selectedRhyme = selectedIndex == index1 ? rhyme1 : rhyme2;
+                    printf("Selected rhyme: %d. %s\n", selectedIndex + 1, selectedRhyme);
+
+                    key_t key = ftok("queue", 65);
+                    int msgid = msgget(key, 0666 | IPC_CREAT);
+                    struct msgbuf message;
+                    message.mtype = 1;
+                    sprintf(message.mtext, "%d. %s", selectedIndex, selectedRhyme);
+                    msgsnd(msgid, &message, sizeof(message.mtext), 0);
+
+                    printf("May I sprinkle!\n");
+                    exit(EXIT_SUCCESS);
+                } else { // Parent process
+                    signal(SIGUSR1, signal_handler); // Set up signal handler
+
+                    pause(); // Wait for child to send signal
+
+                    key_t key = ftok("queue", 65);
+                    int msgid = msgget(key, 0666 | IPC_CREAT);
+                    char selectedRhyme[MAX_VERS_LENGTH];
+                    struct msgbuf message;
+                    msgrcv(msgid, &message, sizeof(message.mtext), 0, 0);
+
+
+                    printf("Received selected rhyme: %s\n", message.mtext);
+
+                    int selectedIndex;
+                    sscanf(message.mtext, "%d", &selectedIndex);
+                    //printf("Received selected index: %d\n", selectedIndex+1);
+                    deletePoem(filename, selectedIndex+1);
+
+                    printf("Son %d has returned home.\n", son);
+                }
+
                 break;
-            }
-
-
-
             case 0:
                 printf("Quiting...\n");
                 break;
