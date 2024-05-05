@@ -10,44 +10,24 @@
 #include <signal.h>
 
 #define MAX_VERS 100
-#define MAX_VERS_LENGTH 100
+#define MAX_VERS_LENGTH 1000
+#define NUMBER_OF_CHILDREN 4
 
 int pipefd[2];
-char vers[MAX_VERS][MAX_VERS_LENGTH];
-int vers_count;
-
-int pipe_ready = 0;
-int signal_received = 0;
+char poems[MAX_VERS][MAX_VERS_LENGTH];
+int poem_count;
 
 void signal_handler(int signum) {
-    int index1 = rand() % vers_count;
-    int index2 = rand() % vers_count;
+    int index1 = rand() % poem_count;
+    int index2;
+    do {
+        index2 = rand() % poem_count;
+    } while(index2 == index1);
     write(pipefd[1], &index1, sizeof(index1));
-    write(pipefd[1], vers[index1], MAX_VERS_LENGTH);
+    write(pipefd[1], poems[index1], MAX_VERS_LENGTH);
     write(pipefd[1], &index2, sizeof(index2));
-    write(pipefd[1], vers[index2], MAX_VERS_LENGTH);
+    write(pipefd[1], poems[index2], MAX_VERS_LENGTH);
 }
-
-/*int findPoemIndex(const char *filename, const char *poem) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Error: Failed to open the file for reading!\n");
-        return -1;
-    }
-
-    char poems[MAX_VERS][MAX_VERS_LENGTH];
-    int count = 0;
-    while (fgets(poems[count], sizeof(poems[count]), file) != NULL) {
-        if (strcmp(poems[count], poem) == 0) {
-            fclose(file);
-            return count + 1; // +1 because the index in the file starts from 1
-        }
-        count++;
-    }
-
-    fclose(file);
-    return -1;
-}*/
 
 //Checks if the file exists
 int fileExists(const char *filename) {
@@ -64,6 +44,21 @@ void addPoemToFile(const char *filename, const char *poem) {
     FILE *file = fopen(filename, "a");
     if (file == NULL) {
         printf("Error: Failed to open the file for reading!\n");
+        return;
+    }
+    if (strlen(poem) < 2 || strlen(poem) > MAX_VERS_LENGTH - 1)
+    {
+        printf("Error: The poem is too long or too short!\n");
+        return;
+    }
+    int i;
+    for (i = 0; i < strlen(poem); i++) {
+        if (poem[i] == ' ') {
+            i++;
+        }
+    }
+    if (i == strlen(poem)) {
+        printf("Error: The poem cannot consist only of blank spaces!\n");
         return;
     }
     fprintf(file, "%s", poem);
@@ -152,6 +147,19 @@ void deletePoem(const char *filename, int index) {
     }
     fclose(file);
     printf("The poem was successfully deleted!\n");
+
+    FILE *fileReRead = fopen(filename, "r");
+    if (fileReRead == NULL) {
+        printf("Error: Failed to open the file for reading!\n");
+        return;
+    }
+
+    poem_count = 0;
+    while (fgets(poems[poem_count], sizeof(poems[poem_count]), file) != NULL) {
+        poem_count++;
+    }
+
+    fclose(fileReRead);
 }
 
 //If the given .txt in the parameter does not exist you have the option to create it.
@@ -190,10 +198,10 @@ int main(int argc, char *argv[]) {
         printf("Error: Failed to open the file for reading!\n");
         return -1;
     }
-
-    vers_count = 0;
-    while (fgets(vers[vers_count], sizeof(vers[vers_count]), file) != NULL) {
-        vers_count++;
+    
+    poem_count = 0;
+    while (fgets(poems[poem_count], sizeof(poems[poem_count]), file) != NULL) {
+        poem_count++;
     }
 
     fclose(file);
@@ -212,11 +220,17 @@ int main(int argc, char *argv[]) {
         printf("2. List the poems\n");
         printf("3. Modify the poem\n");
         printf("4. Delete\n");
-        printf("5. Locsolás\n");
+        printf("5. Sprinkle!\n");
         printf("0. Quit\n");
         printf("------------------\n");
         printf("Choose: ");
-        scanf("%d", &choice);
+        //scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input. Please enter an integer.\n");
+            // Clear the input buffer
+            while (getchar() != '\n');
+            continue;
+        }
         printf("------------------\n");
         getchar(); // Flush input buffer
 
@@ -244,9 +258,14 @@ int main(int argc, char *argv[]) {
                 deletePoem(filename, index);
                 break;
             case 5:
+                if(poem_count < 2){
+                    printf("There are not enough poems to sprinkle!\n");
+                    break;
+                }
+
                 srand(time(NULL));
-                int son = rand() % 4 + 1;
-                printf("Son %d is selected for sprinkling.\n", son);
+                int son = rand() % NUMBER_OF_CHILDREN + 1;
+                printf("Son %d is selected for sprinkling.\n\n", son);
 
                 if (pipe(pipefd) == -1) {
                     perror("pipe");
@@ -260,7 +279,6 @@ int main(int argc, char *argv[]) {
                     exit(EXIT_FAILURE);
                 }
 
-
                 if (pid == 0) { // Child process
                     kill(getppid(), SIGUSR1); // Send signal to parent
 
@@ -270,20 +288,23 @@ int main(int argc, char *argv[]) {
                     read(pipefd[0], rhyme1, MAX_VERS_LENGTH);
                     read(pipefd[0], &index2, sizeof(index2));
                     read(pipefd[0], rhyme2, MAX_VERS_LENGTH);
-                    printf("Received rhymes: %s, %s\n", rhyme1, rhyme2);
+                    //printf("\n");
+                    printf("Received poems:\n");
+                    printf("1. %s", rhyme1);
+                    printf("2. %s\n", rhyme2);
 
                     int selectedIndex = rand() % 2 == 0 ? index1 : index2;
-                    char *selectedRhyme = selectedIndex == index1 ? rhyme1 : rhyme2;
-                    printf("Selected rhyme: %d. %s\n", selectedIndex + 1, selectedRhyme);
+                    char *selectedPoem = selectedIndex == index1 ? rhyme1 : rhyme2;
+                    printf("Selected poem: %s\n", selectedPoem);
 
                     key_t key = ftok("queue", 65);
                     int msgid = msgget(key, 0666 | IPC_CREAT);
                     struct msgbuf message;
                     message.mtype = 1;
-                    sprintf(message.mtext, "%d. %s", selectedIndex, selectedRhyme);
+                    sprintf(message.mtext, "%d. %s", selectedIndex, selectedPoem);
                     msgsnd(msgid, &message, sizeof(message.mtext), 0);
 
-                    printf("May I sprinkle!\n");
+                    printf("May I sprinkle?\n");
                     exit(EXIT_SUCCESS);
                 } else { // Parent process
                     signal(SIGUSR1, signal_handler); // Set up signal handler
@@ -292,21 +313,20 @@ int main(int argc, char *argv[]) {
 
                     key_t key = ftok("queue", 65);
                     int msgid = msgget(key, 0666 | IPC_CREAT);
-                    char selectedRhyme[MAX_VERS_LENGTH];
+                    char selectedPoem[MAX_VERS_LENGTH];
                     struct msgbuf message;
                     msgrcv(msgid, &message, sizeof(message.mtext), 0, 0);
 
-
-                    printf("Received selected rhyme: %s\n", message.mtext);
+                    printf("------------------\n");
+                    printf("Received selected poem: %s\n", message.mtext);
 
                     int selectedIndex;
                     sscanf(message.mtext, "%d", &selectedIndex);
                     //printf("Received selected index: %d\n", selectedIndex+1);
                     deletePoem(filename, selectedIndex+1);
 
-                    printf("Son %d has returned home.\n", son);
+                    printf("\nSon %d has returned home.", son);
                 }
-
                 break;
             case 0:
                 printf("Quiting...\n");
