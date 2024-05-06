@@ -274,7 +274,7 @@ int main(int argc, char *argv[]) {
                 
                 pid_t pid = fork();
                 
-                if (pid == -1) {
+                if (pid < 0) {
                     perror("fork");
                     exit(EXIT_FAILURE);
                 }
@@ -290,7 +290,7 @@ int main(int argc, char *argv[]) {
                     read(pipefd[0], rhyme2, MAX_VERS_LENGTH);
                     //printf("\n");
                     printf("Received poems:\n");
-                    printf("1. %s", rhyme1);
+                    printf("1. %s\n", rhyme1);
                     printf("2. %s\n", rhyme2);
 
                     int selectedIndex = rand() % 2 == 0 ? index1 : index2;
