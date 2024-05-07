@@ -1,0 +1,4 @@
+./while ./tests/02.ok > 02.asm
+nasm -f elf 02.asm
+gcc -o kesz 02.o io.c
+./kesz
