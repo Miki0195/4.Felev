@@ -1,88 +1,181 @@
-/*Eddig van meg: Oldja meg az alábbi feladatot C nyelven, ami egy Linux rendszeren tud futni. (Ez lehet a tárgy kiszolgálója ( opsys.inf.elte.hu) vagy egy saját lokális Linux rendszer!) Az eredményt (csak a C forrásfájlt, pl: alma.c) töltse fel maximum 1.5 óra után a kezdést követően. A feladatokat a gyakorlatvezetők fogják értékelni és az eredményt bejegyzik. A dolgozat eredménye elégséges ha az első feladat kész, közepes ha az első kettő stb.
-
-A Húsvét elmúlt, és a húsvéti locsoló verseny győztese átveszi a hatalmat és Ő lesz az új "Főnyuszi". Ahogy végigsétál a birodalmán, látja a tavasz "gyümölcseit", akik vidáman szaladgálnak a frissen kizöldült határban. Elhatározza, hogy " nyusziszámlálást" kell tartani.
-
-"Főnyuszi" (szülő) nem tart teljes népszámlálást, választ kettőt a területek( Barátfa, Lovas, Kígyós-patak , Káposztás , Szula, Malom telek, Páskom) közül, ahova nyuszi számláló biztost (gyerek) küld.
-
-Főnyuszi felkéri a nyuszi számláló biztosokat, Tapsit és Fülest (létrehozza a gyerekeket) és megvárja, amíg a biztosok felkészülnek a feladatra, amit jelzéssel (tetszőleges) nyugtáznak. Miután főnyuszi fogadta a jelzéseket üzenetsoron továbbítja mindkét számláló biztosnak a kiválasztott területet, ahol fel kell mérni az állományt. Tapsi is és Füles is kiírja a feladatul kapott terület-nevet a képernyőre, majd befejezik aznapra a tevékenységüket( terminálnak), amit Főnyuszi megvár, majd képernyőre írja, hogy Tapsi is és Füles is nyugovóra tért, majd Ő is befejezi aznapra a munkát. Miután Tapsi és Füles képernyőre írja a kapott terület-nevet, elkezdik a nyuszik számlálását. Az eredményeket ( véletlenszám 50 és 100 között) szintén üzenetsoron küldik vissza Főnyuszinak, aki a képernyőre írja azokat.*/
-
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <signal.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
 
-// Nyuszi számláló biztosok struktúrája
+#define BUFFER_SIZE 256
+#define MSG_KEY 1234
+
 typedef struct {
-    char nev[20];
-} NyusziSzamlaloBiztos;
+    char title[BUFFER_SIZE];
+    char student_name[BUFFER_SIZE];
+    int submission_year;
+    char supervisor_name[BUFFER_SIZE];
+} Thesis;
 
-// Területek neveinek felsorolása
-enum Terulet {Baratfa, Lovas, KigyosPatak, Kaposztas, Szula, MalomTelek, Paskom};
+// Define a structure for message queue because i don't have <mqueue.h> on MacOS (it's not supported)
+struct msg_buffer {
+    long msg_type;
+    char msg_text[BUFFER_SIZE];
+};
 
-// Terület nevek tömbje
-char* teruletNevek[] = {"Barátfa", "Lovas", "Kígyós-patak", "Káposztás", "Szula", "Malom telek", "Páskom"};
+void signal_handler(int signum) {
+    if (signum == SIGUSR1) {
+        printf("Student has logged in.\n");
+    } else if (signum == SIGUSR2) {
+        printf("Supervisor has logged in.\n");
+    }
+}
 
-// Függvények deklarációi
-void jelzes(int pid);
-void fonyusziFeladat(NyusziSzamlaloBiztos tapsi, NyusziSzamlaloBiztos fules, enum Terulet terulet);
-void termin();
-int randomSzam();
+void student_process(int fd[]) {
+    close(fd[0]); // Close reading end of the pipe
+
+    // Send signal to Neptun that student has logged in
+    kill(getppid(), SIGUSR1);
+
+    // Prepare the thesis
+    Thesis thesis = {
+        .title = "Záródoga",
+        .student_name = "Buchsbaum Miklós",
+        .submission_year = 2022,
+        .supervisor_name = "Tatai Áron"
+    };
+
+    // Write the thesis to the pipe
+    write(fd[1], &thesis, sizeof(Thesis));
+    close(fd[1]); // Close the writing end of the pipe
+
+    // Get the message queue
+    int msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
+    if (msgid == -1) {
+        perror("msgget");
+        exit(EXIT_FAILURE);
+    }
+
+    // Read the question from the message queue
+    struct msg_buffer msg;
+    if (msgrcv(msgid, &msg, sizeof(msg.msg_text), 1, 0) == -1) {
+        perror("msgrcv");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Question from supervisor: %s\n", msg.msg_text);
+
+    // Contemplate the answer
+    sleep(5); // Simulate time taken to contemplate
+
+    // Send answer to supervisor
+    /*strcpy(msg.msg_text, "I would like to use C programming language.");
+    if (msgsnd(msgid, &msg, sizeof(msg.msg_text), 0) == -1) {
+        perror("msgsnd");
+        exit(EXIT_FAILURE);
+    }*/
+}
+
+void supervisor_process(int fd[]) {
+    close(fd[1]); // Close writing end of the pipe
+
+    // Send signal to Neptun that supervisor has logged in
+    kill(getppid(), SIGUSR2);
+
+    // Read the thesis from the pipe
+    Thesis thesis;
+    read(fd[0], &thesis, sizeof(Thesis));
+    printf("--------------\n");
+    printf("Thesis title: %s\n", thesis.title);
+    printf("Student name: %s\n", thesis.student_name);
+    printf("Submission year: %d\n", thesis.submission_year);
+    printf("Supervisor name: %s\n", thesis.supervisor_name);
+    printf("--------------\n");
+    close(fd[0]); // Close the reading end of the pipe
+
+    // Get the message queue
+    int msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
+    if (msgid == -1) {
+        perror("msgget");
+        exit(EXIT_FAILURE);
+    }
+
+    // Send question to student
+    struct msg_buffer msg;
+    msg.msg_type = 1;
+    strcpy(msg.msg_text, "What technology would you like to use to implement your task?");
+    if (msgsnd(msgid, &msg, sizeof(msg.msg_text), 0) == -1) {
+        perror("msgsnd");
+        exit(EXIT_FAILURE);
+    }
+
+    // Wait for answer from student
+    if (msgrcv(msgid, &msg, sizeof(msg.msg_text), 1, 0) == -1) {
+        perror("msgrcv");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Supervisor:%s\n", msg.msg_text);
+}
 
 int main() {
-    NyusziSzamlaloBiztos tapsi = {"Tapsi"};
-    NyusziSzamlaloBiztos fules = {"Füles"};
+    // Pipes for communication between Neptun and the student
+    int neptun_student_pipe[2];
+    if (pipe(neptun_student_pipe) == -1) {
+        perror("Pipe creation failed");
+        exit(EXIT_FAILURE);
+    }
 
-    // Főnyuszi választ két területet
-    enum Terulet terulet1 = Baratfa;
-    enum Terulet terulet2 = Lovas;
+    // Pipes for communication between Neptun and the supervisor
+    int neptun_supervisor_pipe[2];
+    if (pipe(neptun_supervisor_pipe) == -1) {
+        perror("Pipe creation failed");
+        exit(EXIT_FAILURE);
+    }
 
-    // Jelzések fogadása a számláló biztosoktól
-    printf("Főnyuszi várja a jelzéseket...\n");
-    jelzes(getpid());
+    // Set up signal handler
+    signal(SIGUSR1, signal_handler);
+    signal(SIGUSR2, signal_handler);
 
-    // Főnyuszi átadja a feladatot a számláló biztosoknak
-    printf("Főnyuszi átadja a feladatot Tapsinak és Fülesnek...\n");
-    fonyusziFeladat(tapsi, fules, terulet1);
-    fonyusziFeladat(tapsi, fules, terulet2);
+    pid_t student_pid = fork();
 
-    // Főnyuszi befejezi aznapra a munkát
-    printf("Főnyuszi befejezi aznapra a munkát...\n");
+    if (student_pid == -1) {
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (student_pid == 0) { // Student process
+        student_process(neptun_student_pipe);
+        exit(EXIT_SUCCESS);
+    }
 
-    // Nyuszi számláló biztosok terminálnak
-    termin();
+    // Wait for signal from student
+    pause();
+
+    pid_t supervisor_pid = fork();
+
+    if (supervisor_pid == -1) {
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
+    } else if (supervisor_pid == 0) { // Supervisor process
+        supervisor_process(neptun_supervisor_pipe);
+        exit(EXIT_SUCCESS);
+    }
+
+    // Wait for signal from supervisor
+    pause();
+
+    // Parent process reads the thesis from the student process
+    Thesis thesis;
+    read(neptun_student_pipe[0], &thesis, sizeof(Thesis));
+
+    // Parent process sends the thesis to the supervisor process
+    write(neptun_supervisor_pipe[1], &thesis, sizeof(Thesis));
+
+    // Wait for student and supervisor processes to finish
+    wait(NULL);
+    printf("Student process (child) finished.\n");
+    wait(NULL);
+    printf("Supervisor process (grandchild) finished.\n");
+    printf("Neptun process (parent) finished.\n");
 
     return 0;
-}
-
-// Jelzés küldése a főnyuszinek
-void jelzes(int pid) {
-    // Jelzés küldése a főnyuszinek
-    printf("Jelzés küldése a főnyuszinek (PID: %d)...\n", pid);
-    sleep(1); // Várakozás, hogy a főnyuszi megvárja a jelzéseket
-}
-
-// Főnyuszi feladatának végrehajtása a megadott területen
-void fonyusziFeladat(NyusziSzamlaloBiztos tapsi, NyusziSzamlaloBiztos fules, enum Terulet terulet) {
-    // Terület nevének kiírása
-    printf("%s terület nyuszi számlálása folyamatban...\n", teruletNevek[terulet]);
-    
-    // Nyuszik számlálása
-    srand(time(NULL));
-    int nyuszikSzama = randomSzam();
-    
-    // Eredmények küldése főnyuszinek
-    printf("%s és %s befejezte a feladatot ezen a területen.\n", tapsi.nev, fules.nev);
-    printf("Eredmények küldése Főnyuszinek: %d nyuszi találtak %s területen.\n", nyuszikSzama, teruletNevek[terulet]);
-}
-
-// Véletlenszám generálása 50 és 100 között
-int randomSzam() {
-    return rand() % 51 + 50;
-}
-
-// Terminálás
-void termin() {
-    printf("Nyuszi számláló biztosok nyugovóra tértek.\n");
-    printf("Főnyuszi is nyugovóra tér...\n");
 }

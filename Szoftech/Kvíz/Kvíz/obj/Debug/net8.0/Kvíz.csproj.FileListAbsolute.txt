@@ -1,0 +1,15 @@
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/bin/Debug/net8.0/Kvíz
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/bin/Debug/net8.0/Kvíz.deps.json
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/bin/Debug/net8.0/Kvíz.runtimeconfig.json
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/bin/Debug/net8.0/Kvíz.dll
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/bin/Debug/net8.0/Kvíz.pdb
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.GeneratedMSBuildEditorConfig.editorconfig
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.AssemblyInfoInputs.cache
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.AssemblyInfo.cs
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.csproj.CoreCompileInputs.cache
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.sourcelink.json
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.dll
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/refint/Kvíz.dll
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.pdb
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/Kvíz.genruntimeconfig.cache
+/Users/buchsbaummiklos/Documents/Elte/4.Félév/4.FélévGit/4.Felev/Szoftech/Kvíz/Kvíz/obj/Debug/net8.0/ref/Kvíz.dll

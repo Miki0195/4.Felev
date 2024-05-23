@@ -210,7 +210,7 @@ int main(int argc, char *argv[]) {
     char poem[MAX_VERS_LENGTH];
     int sync_pipe[2];
 
-    struct msgbuf {
+    struct msgbuf { 
         long mtype;
         char mtext[MAX_VERS_LENGTH];
     };
@@ -297,7 +297,7 @@ int main(int argc, char *argv[]) {
                     char *selectedPoem = selectedIndex == index1 ? rhyme1 : rhyme2;
                     printf("Selected poem: %s\n", selectedPoem);
 
-                    key_t key = ftok("queue", 65);
+                    key_t key = ftok(argv[0], 65);
                     int msgid = msgget(key, 0666 | IPC_CREAT);
                     struct msgbuf message;
                     message.mtype = 1;
