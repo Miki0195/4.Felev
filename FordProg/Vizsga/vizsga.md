@@ -241,8 +241,11 @@ Magas színtű programozási nyelv -> **Fordítóprogram** -> Gépi kód
 ![Fordítóprogramok logikai felépítése](fordprogramok_logikai_felepitese.jpeg)
 
         
-
-
+- **Lexikális elemző:** 
+    - Feladat: A forrásszöveg elemi egységekre tagolása
+    - Bemenet: Karaktersorozat
+    - Kimenet: Lexikális elemek sorozata + lexikális hibák
+    - Eszközök: Reguláris kifejezések, véges determinisztikus automaták
 
 
 
