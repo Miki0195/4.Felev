@@ -47,7 +47,7 @@
 ## 12. Melyik igaz az extern kulcsszóra NASM assemblyben?
 - <span style="color:green">Már forrásfájlokban definiált címkét tesz láthatóvá ebben a forrásfájlban.</span>
 
-## 13. Melyik utasítások hagyják biztosan változatlanul az al regiszter?
+## 13. Melyik utasítások hagyják biztosan változatlanul az al regiszter?
 - <span style="color:green">and bl,al</span>
 - <span style="color:green">or al,0</span>
 
@@ -106,7 +106,7 @@
 - G2: S -> aA | bB | B ; A -> aS ; B -> a
 - G3: S -> aA | bB | a ; A –> aS ; B –> aC ; C -> ε
 
-## 29. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ekkor G-nek van legalább egy aktív nemterminálisa.
+## 29. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ekkor G-nek van legalább egy aktív nemterminálisa.
 - <span style="color:green">Hamis</span>
 
 ## 30. R = (b|a)*b. Hány állapotú az R reguláris kifejezéshez tartozó nyelvet felismerő minimális automata? 
@@ -119,7 +119,7 @@
 ## 32. Mit mond ki a nagy Bar-Hillel lemma? 
 - <span style="color:green">Szükséges feltételt a 2-es típusú nyelvekre.</span>
 
-## 33. Melyik a helyes sorrend?
+## 33. Melyik a helyes sorrend?
 - <span style="color:green">lexikális, szintaktikus, szemantikus, kódgenerálás & optimalizálás</span>
 
 ## 34. Melyik modulok implementálhatók teljes egészében elemzőgenerátorok segítségével?
@@ -142,7 +142,7 @@
 ## 38. Melyik igaz a global kulcsszóra a NASM assemblyben?
 - <span style="color:green">A forrásfájlban definiált címkét tesz láthatóvá más forrásfájlokban.</span>
 
-## 39. Mely állítások részei a C függvények hívási konvencióinak?
+## 39. Mely állítások részei a C függvények hívási konvencióinak?
 - <span style="color:green">A paramétereket a C függvény bent hagyja a veremben.</span>
 - <span style="color:green">A paramétereket fordított sorrendben kell a verembe tenni.</span>
 
@@ -167,11 +167,11 @@
 ## 45. Mit jelent az, hogy egy környezetfüggetlen nyelvtan egyértelmű?
 - <span style="color:green">Minden szavához pontosan egy szintaxisfa tartozik.</span>
 
-## 46. Válassza ki az összes igaz állítást!
+## 46. Válassza ki az összes igaz állítást!
 - <span style="color:green">A rekurzív elemző nyelvtantól függő részében minden elágazás ág egy-egy szabályához tartozik, vagy hibaág.</span>
 - <span style="color:green">A rekurzív leszállásos elemzőben minden nemterminálishoz egy-egy alprogramot írunk.</span>
 
-## 47. Melyik állítások igazak az attribútumnyelvtanok akcióira?
+## 47. Melyik állítások igazak az attribútumnyelvtanok akcióira?
 - <span style="color:green">Használhatjuk a szimbólumtáblát.</span>
 - <span style="color:green">Csak azokat az attribútumokat érik el, amelyek az akciókhoz tartozó nyelvtani szabály szimbólumaihoz tartoznak.</span>
 
@@ -303,7 +303,7 @@
 ## 81. Mi a fordítóprogramok elemzési lépéseinek logikai sorrendje?
 - <span style="color:green">lexikális, szintaktikus, szemantikus</span>
 
-## 82. Melyik állítás helyes?
+## 82. Melyik állítás helyes?
 - <span style="color:green">A lexikális elemek a szintaktikus elemző nyelvtanának terminálisai.</span>
 
 ## 83. Melyik állítás helyes?
@@ -325,14 +325,14 @@
 ## 88. Milyen extra információt csatol a lexikális elemző egy azonosító szimbólumhoz?
 - <span style="color:green">A token helyét és szövegét</span>
 
-## 89. Mikor egyértelmű egy nyelvtan?
+## 89. Mikor egyértelmű egy nyelvtan?
 - <span style="color:green">Ha minden szóhoz egy szintaxisfa létezik</span>
 
 ## 90. Az operátorok mely tulajdonságai fontosak szintaktikus elemzésnél?
 - <span style="color:green">Asszocativitás</span>
 - <span style="color:green">Precendencia</span>
 
-## 91. Melyik elemzési stratégia állítja elő a legjobboldalibb levezetések inverzét?
+## 91. Melyik elemzési stratégia állítja elő a legjobboldalibb levezetések inverzét?
 - <span style="color:green">Alulról felfelé elemzés</span>
 
 ## 92. Melyek a helyes párosítások?

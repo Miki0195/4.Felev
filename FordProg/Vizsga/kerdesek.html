@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>kerdesek.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="form%C3%A1lis-nyelvek-%C3%A9s-ford%C3%ADt%C3%B3programok">Formális nyelvek és fordítóprogramok</h1>
+<h2 id="1-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ha-l-%E2%8A%86-v-akkor--uv--uv-%E2%88%88-l---lsup2sup">1. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ha L ⊆ V*, akkor { uv | u,v ∈ L } = L<sup>2</sup>.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+<li>Hamis</li>
+</ul>
+<h2 id="2-tekints%C3%BCk-a-v-%C3%A1b%C3%A9c%C3%A9t-ekkor-1-minden-l-%E2%8A%86-v-nyelv-eset%C3%A9n-l%C3%B8--%C3%B8-2-minden-l-%E2%8A%86-v-nyelv-est%C3%A9n-l%CE%B5--l-melyik-%C3%A1ll%C3%ADt%C3%A1s-igaz">2. Tekintsük a V ábécét. Ekkor 1. Minden L ⊆ V* nyelv esetén LØ = Ø. 2. Minden L ⊆ V* nyelv estén L{ε} = L. Melyik állítás igaz?</h2>
+<ul>
+<li>Egyiksem</li>
+<li><span style="color:green">Mindkettő</span></li>
+<li>Csak az első</li>
+<li>Csak a második</li>
+</ul>
+<h2 id="3-h%C3%A1nyas-grammatika-t%C3%ADpusnak-felel-meg-az-al%C3%A1bbi-szab%C3%A1ly-ab---ab">3. Hányas grammatika típusnak felel meg az alábbi szabály? AB -&gt; aB</h2>
+<ul>
+<li><span style="color:green">0</span></li>
+<li>3</li>
+<li>2</li>
+<li><span style="color:green">1</span></li>
+</ul>
+<h2 id="4-legyen-g--n-t-p-s-tetsz%C5%91leges-k%C3%B6rnyezetf%C3%BCggetlen-grammatika-ha-a-g-grammitika-renduk%C3%A1lt-akkor-lehetnek-inakt%C3%ADv-nemtermin%C3%A1lisai">4. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ha a G grammitika rendukált, akkor lehetnek inaktív nemterminálisai.</h2>
+<ul>
+<li>Igaz</li>
+<li><span style="color:green">Hamis</span></li>
+</ul>
+<h2 id="5-legyen-g--n-t-p-s-tetsz%C5%91leges-k%C3%B6rnyezetf%C3%BCggetlen-grammatika-ekkor-megadhat%C3%B3-olyan-g-vel-ekvivalens-g--n-t-p-s-grammatika-amelynek-b%C3%A1rmely-u-%E2%86%92-v-%E2%88%88-p-szab%C3%A1ly%C3%A1ra-teljes%C3%BCl-hogy-v-%E2%88%88-t-vagy-v-%E2%88%88-n">5. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ekkor megadható, olyan G-vel ekvivalens G' = (N', T, P', S') grammatika, amelynek bármely u → v ∈ P' szabályára teljesül, hogy v ∈ T* vagy v ∈ N*.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+<li>Hamis</li>
+</ul>
+<h2 id="6-mi-a-szintaktikus-elemz%C5%91-feladata">6. Mi a szintaktikus elemző feladata?</h2>
+<ul>
+<li><span style="color:green">A forrásszöveg szerkezetének feltérképezése, formai helyesség ellenőrzése.</span></li>
+</ul>
+<h2 id="7-v%C3%A1lassza-ki-az-igaz-%C3%A1ll%C3%ADt%C3%A1sokat">7. Válassza ki az igaz állításokat!</h2>
+<ul>
+<li><span style="color:green">A Java Virtuális Gép bemenete bájtkód.</span></li>
+<li><span style="color:green">A Java Virtáulis Gép egy értelmező.</span></li>
+<li><span style="color:green">A Java Virtuális Gép futási időben működik.</span></li>
+</ul>
+<h2 id="8-hogyan-tokeniz%C3%A1lja-a-c-lexik%C3%A1lis-elemz%C5%91je-a-k%C3%B6vetkez%C5%91-karaktersorozatokat-dowhile">8. Hogyan tokenizálja a C++ lexikális elemzője a következő karaktersorozatokat? dowhile</h2>
+<ul>
+<li><span style="color:green">Egy azonosítot ad eredményül.</span></li>
+</ul>
+<h2 id="9-mi-t%C3%B6rt%C3%A9nik-a-l%C3%A9ptet%C3%A9s-m%C5%B1velet-hat%C3%A1s%C3%A1ra">9. Mi történik a léptetés művelet hatására?</h2>
+<ul>
+<li><span style="color:green">Egy terminális szimbólum az elemző vermének tetejére kerül. </span></li>
+</ul>
+<h2 id="10-melyik-igaz">10. Melyik igaz?</h2>
+<ul>
+<li><span style="color:green">Bisonban a $$ jelöli a szabály bal oldalának attribútumát. </span></li>
+</ul>
+<h2 id="11-v%C3%A1lassza-ki-azokat-amelyeket-nem-a-szemantikus-elemz%C5%91-v%C3%A9gez">11. Válassza ki azokat, amelyeket NEM a szemantikus elemző végez!</h2>
+<ul>
+<li><span style="color:green">Vezérlési szerkezetek helyes formátumának ellenőrzése.</span></li>
+<li><span style="color:green">Futás idejű hibák kiszűrése.</span></li>
+</ul>
+<h2 id="12-melyik-igaz-az-extern-kulcssz%C3%B3ra-nasm-assemblyben">12. Melyik igaz az extern kulcsszóra NASM assemblyben?</h2>
+<ul>
+<li><span style="color:green">Már forrásfájlokban definiált címkét tesz láthatóvá ebben a forrásfájlban.</span></li>
+</ul>
+<h2 id="13-melyik-utas%C3%ADt%C3%A1sok-hagyj%C3%A1k-biztosan-v%C3%A1ltozatlanul-az-al-regiszter">13. Melyik utasítások hagyják biztosan változatlanul az al regiszter?</h2>
+<ul>
+<li><span style="color:green">and bl,al</span></li>
+<li><span style="color:green">or al,0</span></li>
+</ul>
+<h2 id="14-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ha-l-%E2%8A%86-v-akkor-uv--uv-%E2%88%88-l---lsup2sup">14. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ha L ⊆ V*, akkor {uv | u,v ∈ L } = L<sup>2</sup></h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+</ul>
+<h2 id="15-tekints%C3%BCk-a-v-%C3%A1b%C3%A9c%C3%A9t-ekkor-1-minden-l-%E2%8A%86-v-nyelv-eset%C3%A9n-l%CE%B5--%CE%B5-2-%E2%88%83-olyan-l-%E2%8A%86-v-amelyre-l%CE%B5--l-melyik-%C3%A1ll%C3%ADt%C3%A1s-igaz">15. Tekintsük a V ábécét. Ekkor 1. Minden L ⊆ V* nyelv esetén L{ε} = {ε}. 2. ∃ olyan L ⊆ V*, amelyre L{ε} = L. Melyik állítás igaz?</h2>
+<ul>
+<li><span style="color:green">Csak a második</span></li>
+</ul>
+<h2 id="16-h%C3%A1nyas-grammatika-t%C3%ADpusnak-felel-meg-az-al%C3%A1bbi-szab%C3%A1ly-a---bbb">16. Hányas grammatika típusnak felel meg az alábbi szabály? A -&gt; bBb</h2>
+<ul>
+<li><span style="color:green">1</span></li>
+<li><span style="color:green">0</span></li>
+<li><span style="color:green">2</span></li>
+</ul>
+<h2 id="17-legyen-gntps-tetsz%C5%91leges-k%C3%B6rnyezetf%C3%BCggetlen-grammatika-ha-a-grammatika-reduk%C3%A1lt-akkor-minden-nemtermin%C3%A1lis-el%C3%A9rhet%C5%91">17. Legyen G=(N,T,P,S) tetszőleges környezetfüggetlen grammatika. Ha a grammatika redukált, akkor minden nemterminális elérhető.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+</ul>
+<h2 id="18-aqt%CE%B4qsub0subf-rendezett-%C3%B6t%C3%B6s-egy-v%C3%A9ges-determinisztikus-automat%C3%A1t-jel%C3%B6l-melyek-az-igaz-%C3%A1ll%C3%ADt%C3%A1sok-az-automat%C3%A1val-kapcsolatban">18. A=(Q,T,δ,q<sub>0</sub>,F) rendezett ötös egy véges determinisztikus automatát jelöl. Melyek az igaz állítások az automatával kapcsolatban?</h2>
+<ul>
+<li>Mivel az automata minden lépésben beolvas egy karaktert, ezért üres szót nem ismerhet fel.</li>
+<li><span style="color:green">A Q halmaz véges.</span></li>
+<li>Az A automata csak véges nyelvet ismerhet fel.</li>
+<li><span style="color:green">Az automata működése mindig terminál.</span></li>
+</ul>
+<h2 id="19-legyen-gntps-tetsz%C5%91leges-k%C3%B6rnyezetlenf%C3%BCggetlen-grammatika-ekkora-megadhat%C3%B3-olyan-g-vel-ekvivalens-g--n-t-p-s-grammatika-amelynek-b%C3%A1rmely-u-%E2%86%92-v-%E2%88%88-p-szab%C3%A1ly%C3%A1ra-v-hossza-%E2%89%A4-2-teljes%C3%BCl">19. Legyen G=(N,T,P,S) tetszőleges környezetlenfüggetlen grammatika. Ekkora megadható, olyan G-vel ekvivalens G' = (N', T, P', S') grammatika, amelynek bármely u → v ∈ P' szabályára v hossza ≤ 2 teljesül.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+</ul>
+<h2 id="20-mi-a-lexik%C3%A1lis-elemz%C5%91-kimenete">20. Mi a lexikális elemző kimenete?</h2>
+<ul>
+<li><span style="color:green">Tokensorozat</span></li>
+</ul>
+<h2 id="21-hogyan-implement%C3%A1lhatunk-valamely-%C3%A1ltal%C3%A1nos-c%C3%A9l%C3%BA-programoz%C3%A1si-nyelven-egy-v%C3%A9ges-determinisztikus-automat%C3%A1t">21. Hogyan implementálhatunk valamely általános célú programozási nyelven egy véges determinisztikus automatát?</h2>
+<ul>
+<li><span style="color:green">Táblázattal.</span></li>
+<li><span style="color:green">Egymásba ágyazott elágazásokkal.</span></li>
+</ul>
+<h2 id="22-mire-haszn%C3%A1lj%C3%A1k-az-ll-elemz%C3%A9sek-az-el%C5%91reolvas%C3%A1ssal-nyert-inform%C3%A1ci%C3%B3t">22. Mire használják az LL elemzések az előreolvasással nyert információt?</h2>
+<ul>
+<li><span style="color:green">A soron következő nemterminálisra alkalmazandó szebály kiválasztását segíti.</span></li>
+</ul>
+<h2 id="23-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak-a-follow1a-halmazra">23. Mely állítások igazak a FOLLOW_1(A) halmazra?</h2>
+<ul>
+<li><span style="color:green">Tartalmazza a # (szöveg vége jelet), ha az A valamely levezetett szimbólumsorozat végén áll.</span></li>
+<li><span style="color:green">Tartalmazza azokat a terminálisokat, ameelyek az A után állhatnak a levezetésekben.</span></li>
+</ul>
+<h2 id="24-az-attrib%C3%BAtum%C3%A9rt%C3%A9kek">24. Az attribútumértékek...</h2>
+<ul>
+<li><span style="color:green">a szintaxisfa egyes csúcsaihoz rendelt információk.</span></li>
+</ul>
+<h2 id="25-melyek-igazak">25. Melyek igazak?</h2>
+<ul>
+<li><span style="color:green">A blokk-index vektor elemei a szimbólumtábla vermébe mutató pointerek.</span></li>
+<li><span style="color:green">A blokk-index vektor elemszáma a feldolgozás alatt álló blokk méységétől függ.</span></li>
+</ul>
+<h2 id="26-melyik-igaz-az-extern-kulcssz%C3%B3ra-nasm-assemblyben">26. Melyik igaz az extern kulcsszóra NASM assemblyben?</h2>
+<ul>
+<li><span style="color:green">Más forrásfájlokban definiált címkét tesz láthatóvá ebben a forrásfájlban.</span></li>
+</ul>
+<h2 id="27-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ekkor-l-%E2%88%A9-lsup-1sup--%C3%B8">27. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ekkor L ∩ L<sup>-1</sup> = Ø.</h2>
+<ul>
+<li><span style="color:green">Hamis</span></li>
+</ul>
+<h2 id="28-tekints%C3%BCk-a-gs-ab-p-s-3-t%C3%ADpus%C3%BA-grammatik%C3%A1t-ahol-p-s---aas--ba--a-melyik-a-g-vel-ekvivalens-3-mas-norm%C3%A1lfa">28. Tekintsük a G=({S}, {a,b}, P, S) 3-típusú grammatikát, ahol P: S -&gt; aaS | ba | a. Melyik a G-vel ekvivalens 3-mas normálfa?</h2>
+<ul>
+<li><span style="color:green">G1: S -&gt; aA | bB | aC ; A –&gt; aS ; B -&gt; aC; C –&gt; ε</span></li>
+<li>G2: S -&gt; aA | bB | B ; A -&gt; aS ; B -&gt; a</li>
+<li>G3: S -&gt; aA | bB | a ; A –&gt; aS ; B –&gt; aC ; C -&gt; ε</li>
+</ul>
+<h2 id="29-legyen-g--n-t-p-s-tetsz%C5%91leges-k%C3%B6rnyezetf%C3%BCggetlen-grammatika-ekkor-g-nek-van-legal%C3%A1bb-egy-akt%C3%ADv-nemtermin%C3%A1lisa">29. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ekkor G-nek van legalább egy aktív nemterminálisa.</h2>
+<ul>
+<li><span style="color:green">Hamis</span></li>
+</ul>
+<h2 id="30-r--bab-h%C3%A1ny-%C3%A1llapot%C3%BA-az-r-regul%C3%A1ris-kifejez%C3%A9shez-tartoz%C3%B3-nyelvet-felismer%C5%91-minim%C3%A1lis-automata">30. R = (b|a)*b. Hány állapotú az R reguláris kifejezéshez tartozó nyelvet felismerő minimális automata?</h2>
+<ul>
+<li><span style="color:green">2</span></li>
+</ul>
+<h2 id="31-aqt%CE%B4qsub0subf-rendezett-%C3%B6t%C3%B6s-egy-v%C3%A9ges-determinisztikus-automat%C3%A1t-jel%C3%B6l-melyek-az-igaz-%C3%A1ll%C3%ADt%C3%A1sok-az-automat%C3%A1val-kapcsolatban">31. A=(Q,T,δ,q<sub>0</sub>,F) rendezett ötös egy véges determinisztikus automatát jelöl. Melyek az igaz állítások az automatával kapcsolatban?</h2>
+<ul>
+<li><span style="color:green">A Q halmaz véges.</span></li>
+<li><span style="color:green">Az automata működése mindig terminál.</span></li>
+</ul>
+<h2 id="32-mit-mond-ki-a-nagy-bar-hillel-lemma">32. Mit mond ki a nagy Bar-Hillel lemma?</h2>
+<ul>
+<li><span style="color:green">Szükséges feltételt a 2-es típusú nyelvekre.</span></li>
+</ul>
+<h2 id="33-melyik-a-helyes-sorrend">33. Melyik a helyes sorrend?</h2>
+<ul>
+<li><span style="color:green">lexikális, szintaktikus, szemantikus, kódgenerálás &amp; optimalizálás</span></li>
+</ul>
+<h2 id="34-melyik-modulok-implement%C3%A1lhat%C3%B3k-teljes-eg%C3%A9sz%C3%A9ben-elemz%C5%91gener%C3%A1torok-seg%C3%ADts%C3%A9g%C3%A9vel">34. Melyik modulok implementálhatók teljes egészében elemzőgenerátorok segítségével?</h2>
+<ul>
+<li><span style="color:green">Szintaktikus elemzés</span></li>
+<li><span style="color:green">Lexikális elemzés</span></li>
+</ul>
+<h2 id="35-mit-jelent-a-leghosszabb-illeszked%C3%A9s-elve">35. Mit jelent a leghosszabb illeszkedés elve?</h2>
+<ul>
+<li><span style="color:green">Mindig az elemzendő szöveg soron következő karaktereire leghosszabban illeszkedő tokent választjuk.</span></li>
+</ul>
+<h2 id="36-v%C3%A1lassza-ki-az-%C3%B6sszes-olyan-elemet-amelyb%C5%91l-a-legt%C3%B6bb-programoz%C3%A1si-nyelv-lexik%C3%A1lis-elemz%C5%91je-nem-k%C3%A9sz%C3%ADt-tokent">36. Válassza ki az összes olyan elemet, amelyből a legtöbb programozási nyelv lexikális elemzője nem készít tokent!</h2>
+<ul>
+<li><span style="color:green">megjegyzések</span></li>
+<li><span style="color:green">szóközök</span></li>
+<li><span style="color:green">tabok</span></li>
+<li><span style="color:green">sortörések</span></li>
+</ul>
+<h2 id="37-melyik-%C3%A1ll%C3%ADt%C3%A1sok-igazak-az-attrib%C3%BAtumnyelvtanok-akci%C3%B3ira">37. Melyik állítások igazak az attribútumnyelvtanok akcióira?</h2>
+<ul>
+<li><span style="color:green">Használhatjuk a szimbólumtáblát.</span></li>
+<li><span style="color:green">Csak azokat az attribútumokat érik el, amelyek az akcióhoz tartozó nyelvtani szabály szimbólumaihoz tartoznak.</span></li>
+</ul>
+<h2 id="38-melyik-igaz-a-global-kulcssz%C3%B3ra-a-nasm-assemblyben">38. Melyik igaz a global kulcsszóra a NASM assemblyben?</h2>
+<ul>
+<li><span style="color:green">A forrásfájlban definiált címkét tesz láthatóvá más forrásfájlokban.</span></li>
+</ul>
+<h2 id="39-mely-%C3%A1ll%C3%ADt%C3%A1sok-r%C3%A9szei-a-c-f%C3%BCggv%C3%A9nyek-h%C3%ADv%C3%A1si-konvenci%C3%B3inak">39. Mely állítások részei a C függvények hívási konvencióinak?</h2>
+<ul>
+<li><span style="color:green">A paramétereket a C függvény bent hagyja a veremben.</span></li>
+<li><span style="color:green">A paramétereket fordított sorrendben kell a verembe tenni.</span></li>
+</ul>
+<h2 id="40-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ha-l-%E2%8A%86-v-akkor--uuu--u-%E2%88%88-l---lsup3sup">40. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ha L ⊆ V*, akkor { uuu | u ∈ L } = L<sup>3</sup>.</h2>
+<ul>
+<li>Igaz</li>
+<li><span style="color:green">Hamis</span></li>
+</ul>
+<h2 id="41-legyen-g--n-t-p-s-tetsz%C5%91leges-k%C3%B6rnyezetf%C3%BCggetlen-grammatika-ekkor-g-nek-van-legal%C3%A1bb-egy-el%C3%A9rhet%C5%91-nemtermin%C3%A1lisa">41. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ekkor G-nek van legalább egy elérhető nemterminálisa.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+<li>Hamis</li>
+</ul>
+<h2 id="42-legyen-g--n-t-p-s-tetsz%C5%91leges-k%C3%B6rnyezetf%C3%BCggetlen-grammatika-ha-u---v-%E2%88%88-p-akkor-v-hossza-nagyobb-vagy-egyenl%C5%91-mint-u-hossza">42. Legyen G = (N, T, P, S) tetszőleges környezetfüggetlen grammatika. Ha u -&gt; v ∈ P, akkor v hossza nagyobb vagy egyenlő, mint u hossza.</h2>
+<ul>
+<li>Igaz</li>
+<li><span style="color:green">Hamis</span></li>
+</ul>
+<h2 id="43-melyik-igaz">43. Melyik igaz?</h2>
+<ul>
+<li><span style="color:green">A fordítoprogram fordítási időben működik.</span></li>
+</ul>
+<h2 id="44-h%C3%A1ny-tokenre-t%C3%B6rdeli-a-lexik%C3%A1lis-elemz%C5%91-a-k%C3%B6vetkez%C5%91-c-%C3%A9rt%C3%A9kad%C3%A1st-abcd2">44. Hány tokenre tördeli a lexikális elemző a következő C++ értékadást? ab=cd+2</h2>
+<ul>
+<li><span style="color:green">6</span></li>
+</ul>
+<h2 id="45-mit-jelent-az-hogy-egy-k%C3%B6rnyezetf%C3%BCggetlen-nyelvtan-egy%C3%A9rtelm%C5%B1">45. Mit jelent az, hogy egy környezetfüggetlen nyelvtan egyértelmű?</h2>
+<ul>
+<li><span style="color:green">Minden szavához pontosan egy szintaxisfa tartozik.</span></li>
+</ul>
+<h2 id="46-v%C3%A1lassza-ki-az-%C3%B6sszes-igaz-%C3%A1ll%C3%ADt%C3%A1st">46. Válassza ki az összes igaz állítást!</h2>
+<ul>
+<li><span style="color:green">A rekurzív elemző nyelvtantól függő részében minden elágazás ág egy-egy szabályához tartozik, vagy hibaág.</span></li>
+<li><span style="color:green">A rekurzív leszállásos elemzőben minden nemterminálishoz egy-egy alprogramot írunk.</span></li>
+</ul>
+<h2 id="47-melyik-%C3%A1ll%C3%ADt%C3%A1sok-igazak-az-attrib%C3%BAtumnyelvtanok-akci%C3%B3ira">47. Melyik állítások igazak az attribútumnyelvtanok akcióira?</h2>
+<ul>
+<li><span style="color:green">Használhatjuk a szimbólumtáblát.</span></li>
+<li><span style="color:green">Csak azokat az attribútumokat érik el, amelyek az akciókhoz tartozó nyelvtani szabály szimbólumaihoz tartoznak.</span></li>
+</ul>
+<h2 id="48-mely-%C3%A1ll%C3%ADt%C3%A1sok-r%C3%A9szei-a-c-f%C3%BCggv%C3%A9nyek-h%C3%ADv%C3%A1si-konvenci%C3%B3inak">48. Mely állítások részei a C függvények hívási konvencióinak?</h2>
+<ul>
+<li><span style="color:green">A paramétereket fordított sorrendben kell a verembe tenni.</span></li>
+<li><span style="color:green">A paramétereket a C függvény bent hagyja a veremben.</span></li>
+</ul>
+<h2 id="49-tekints%C3%BCk-a-gs-ab-p-s-3-t%C3%ADpus%C3%BA-grammatik%C3%A1t-ahol-p-s---aas--ba--a-melyik-a-g-vel-ekvivalens-3-mas-norm%C3%A1lfa">49. Tekintsük a G=({S}, {a,b}, P, S) 3-típusú grammatikát, ahol P: S -&gt; aaS | ba | a. Melyik a G-vel ekvivalens 3-mas normálfa?</h2>
+<ul>
+<li>G1: S -&gt; aA | bB | a ; A –&gt; aS ; B -&gt; a</li>
+<li>G2: S -&gt; aA | bB | B ; A -&gt; aS ; B -&gt; aC ; C -&gt; ε</li>
+<li><span style="color:green">G3: S -&gt; aA | bB | aX ; A –&gt; aS ; B –&gt; aX ; X -&gt; ε</span></li>
+</ul>
+<h2 id="50-melyik-igaz">50. Melyik igaz?</h2>
+<ul>
+<li><span style="color:green">A bájtkód fordítási időben jön létre.</span></li>
+</ul>
+<h2 id="51-v%C3%A1lassza-ki-az-al%C3%A1bbiak-k%C3%B6z%C3%BCl-a-g%C3%A9pi-k%C3%B3d-jellemz%C5%91it">51. Válassza ki az alábbiak közül a gépi kód jellemzőit!</h2>
+<ul>
+<li><span style="color:green">Hardverközeli optimalicáziókat tartalmaz.</span></li>
+<li><span style="color:green">Numerikus utasításkódokat tartalmaz.</span></li>
+<li><span style="color:green">Platformfüggő.</span></li>
+</ul>
+<h2 id="52-hogyan-lehet-eld%C3%B6nteni-hogy-egy-k%C3%B6rnyezetf%C3%BCggetlen-nyelvtan-lr1-tulajdons%C3%A1g%C3%BA-e">52. Hogyan lehet eldönteni, hogy egy környezetfüggetlen nyelvtan LR(1) tulajdonságú-e?</h2>
+<ul>
+<li><span style="color:green">Az alapján, hogy az elemző táblázatot kitöltő algoritmus talál-e konfliktust.</span></li>
+</ul>
+<h2 id="53-a-gyakorlatokon-haszn%C3%A1lt-bison-szoftver">53. A gyakorlatokon használt Bison szoftver...</h2>
+<ul>
+<li><span style="color:green">alulról felfelé elemzőt generál.</span></li>
+<li><span style="color:green">LR elemzőt használ.</span></li>
+</ul>
+<h2 id="54-melyik-igaz">54. Melyik igaz?</h2>
+<ul>
+<li><span style="color:green">Bisonban nincsenek örökölt attribútumok.</span></li>
+</ul>
+<h2 id="55-melyek-az-attrib%C3%BAtumnyelvtanok-elemei">55. Melyek az attribútumnyelvtanok elemei?</h2>
+<ul>
+<li><span style="color:green">akciók</span></li>
+<li><span style="color:green">attribútumok</span></li>
+<li>futási időben tárolt típusok</li>
+<li>reakciók</li>
+<li>szimbólumtábla-bejegyzések</li>
+</ul>
+<h2 id="56-milyen-t%C3%ADpus%C3%BA-attrib%C3%BAtumban-t%C3%A1roljuk-a-gener%C3%A1lt-k%C3%B3dot-a-f%C3%A9l%C3%A9v-sor%C3%A1n-haszn%C3%A1lt-p%C3%A9lda-ford%C3%ADt%C3%B3programban">56. Milyen típusú attribútumban tároljuk a generált kódot a félév során használt példa fordítóprogramban?</h2>
+<ul>
+<li><span style="color:green">string</span></li>
+</ul>
+<h2 id="57-melyik-utas%C3%ADt%C3%A1sok-null%C3%A1zz%C3%A1k-ki-az-eax-regisztert">57. Melyik utasítások nullázzák ki az eax regisztert?</h2>
+<ul>
+<li><span style="color:green">xor eax,eax</span></li>
+<li><span style="color:green">sub eax,eax</span></li>
+<li><span style="color:green">mov eax,0</span></li>
+</ul>
+<h2 id="58-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ha-l-%E2%8A%86-v-akkor--uuu--u-%E2%88%88-l---l">58. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ha L ⊆ V*, akkor { uuu | u ∈ L } = L*.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+<li>Hamis</li>
+</ul>
+<h2 id="59-mikor-haszn%C3%A1ljuk-a-szimb%C3%B3lumt%C3%A1bla-besz%C3%BAr%C3%A1s-m%C5%B1velet%C3%A9t">59. Mikor használjuk a szimbólumtábla beszúrás műveletét?</h2>
+<ul>
+<li><span style="color:green">Csak deklaráció feldolgozásakor.</span></li>
+</ul>
+<h2 id="59-tekints%C3%BCk-a-v-%C3%A1b%C3%A9c%C3%A9t-ekkor-1-%E2%88%83-l-%E2%8A%86-v-nyelv-eset%C3%A9n-l%CE%B5--%CE%B5-2-%E2%88%83-olyan-l-%E2%8A%86-v-amelyre-l%CE%B5--l-melyik-%C3%A1ll%C3%ADt%C3%A1s-igaz">59. Tekintsük a V ábécét. Ekkor 1. ∃ L ⊆ V* nyelv esetén L{ε} = {ε}. 2. ∃ olyan L ⊆ V*, amelyre L{ε} = L. Melyik állítás igaz?</h2>
+<ul>
+<li><span style="color:green">Mindkettő.</span></li>
+</ul>
+<h2 id="60-melyik-igaz-a-szintetiz%C3%A1lt-attrib%C3%BAtumokra">60. Melyik igaz a szintetizált attribútumokra?</h2>
+<ul>
+<li><span style="color:green">A szabály bal oldalán áll abban a szabályban, amelyiknek az akciója kiszámolja.</span></li>
+</ul>
+<h2 id="61-v%C3%A1lassza-ki-a-f%C3%A9l%C3%A9v-sor%C3%A1m-implement%C3%A1lt-p%C3%A9lda-k%C3%B3dgener%C3%A1torra-vonatkoz%C3%B3-igaz-%C3%A1ll%C3%ADt%C3%A1sokat">61. Válassza ki a félév sorám implementált példa kódgenerátorra vonatkozó igaz állításokat!</h2>
+<ul>
+<li><span style="color:green">A kódgenerálás során az alsó csúcsok kódjait beillesztjük a felső csúcsok kódjaiba.</span></li>
+<li><span style="color:green">Alulról felfelé haladva a szintaxisfában a generált kódok mérete nő.</span></li>
+</ul>
+<h2 id="62-mivel-tal%C3%A1lkozunk-jellemz%C5%91en-assembly-programokban">62. Mivel találkozunk jellemzően assembly programokban?</h2>
+<ul>
+<li><span style="color:green">Címkék.</span></li>
+<li><span style="color:green">Utasításnevek.</span></li>
+<li><span style="color:green">Regiszternevek.</span></li>
+</ul>
+<h2 id="63-melyik-utas%C3%ADt%C3%A1s-ugrik-felt%C3%A9tel-n%C3%A9lk%C3%BCl">63. Melyik utasítás ugrik feltétel nélkül?</h2>
+<ul>
+<li><span style="color:green">jmp</span></li>
+</ul>
+<h2 id="64-v%C3%A1lassza-ki-azokat-a-m%C5%B1veleteket-amelyek-a-verem-m%C3%A9ret%C3%A9t-biztosan-m%C3%B3dos%C3%ADtj%C3%A1k">64. Válassza ki azokat a műveleteket, amelyek a verem méretét biztosan módosítják!</h2>
+<ul>
+<li><span style="color:green">call</span></li>
+<li><span style="color:green">pop</span></li>
+<li><span style="color:green">ret</span></li>
+<li><span style="color:green">jmp</span></li>
+</ul>
+<h2 id="65-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ha-l-%E2%8A%86-v-akkor-usupnsup--u-%E2%88%88-l-n--0---l">65. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ha L ⊆ V*, akkor {u<sup>n</sup> | u ∈ L, n &gt;= 0 } = L*.</h2>
+<ul>
+<li><span style="color:green">Igaz</span></li>
+<li>Hamis</li>
+</ul>
+<h2 id="66-milyen-eszk%C3%B6z%C3%B6k-tartoznak-a-szintaktikus-elemz%C3%A9shez">66. Milyen eszközök tartoznak a szintaktikus elemzéshez?</h2>
+<ul>
+<li><span style="color:green">Környezetfüggetlen nyelvtan, veremautomaták</span></li>
+</ul>
+<h2 id="67-mi-a-rekurz%C3%ADv-lesz%C3%A1ll%C3%A1s">67. Mi a rekurzív leszállás?</h2>
+<ul>
+<li><span style="color:green">A felülről lefelé elemzés egy implementációs technikája.</span></li>
+</ul>
+<p>## 68. Tekintsük a G=({S}, {a,b}, P, S) grammatikát, ahol P: S -&gt; aaS | bbS | ε. Mely állítások igazak L(G)-re?</p>
+<ul>
+<li><span style="color:green">L(G) szavaiban páros számú b van.</span></li>
+<li><span style="color:green">L(G) 1-es típusú.</span></li>
+<li><span style="color:green">L(G) 3-mas típusú.</span></li>
+</ul>
+<h2 id="69-mit-jelent-a-priorit%C3%A1s-elve">69. Mit jelent a prioritás elve?</h2>
+<ul>
+<li><span style="color:green">Mindig a legnagyobb prioritású tokent választjuk, ha több leghosszabban illeszkedő is van.</span></li>
+</ul>
+<h2 id="70-mik-t%C3%B6rt%C3%A9nnek-a-redukci%C3%B3-m%C5%B1velet-hat%C3%A1s%C3%A1ra">70. Mik történnek a redukció művelet hatására?</h2>
+<ul>
+<li><span style="color:green">Egy nemterminális szimbólum az elemző vermének tetejére kerül.</span></li>
+<li><span style="color:green">Egy szabályjobboldali törlésre kerül a verem tetejéről.</span></li>
+</ul>
+<h2 id="71-mi-a-k%C3%B3dgener%C3%A1l%C3%A1s-feladat">71. Mi a kódgenerálás feladat?</h2>
+<ul>
+<li><span style="color:green">Tárgykód előállítása.</span></li>
+</ul>
+<h2 id="72-mit-haszn%C3%A1ltunk-az-el%C5%91ad%C3%A1sban-bemutatott-k%C3%B3dgener%C3%A1l%C3%A1s-megval%C3%B3s%C3%ADt%C3%A1s%C3%A1hoz">72. Mit használtunk az előadásban bemutatott kódgenerálás megvalósításához?</h2>
+<ul>
+<li><span style="color:green">Attribútumgrammatikákat</span></li>
+</ul>
+<h2 id="73-melyik-regiszterbe-%C3%A9rt%C3%A9kelik-ki-az-el%C5%91ad%C3%A1son-bemutatott-s%C3%A9m%C3%A1k-a-logikai-kifejez%C3%A9seket">73. Melyik regiszterbe értékelik ki az előadáson bemutatott sémák a logikai kifejezéseket?</h2>
+<ul>
+<li><span style="color:green">al</span></li>
+</ul>
+<h2 id="74-hol-t%C3%A1rolj%C3%A1k-el-id%C5%91legesen-a-bemutatott-k%C3%B3dgener%C3%A1l%C3%A1si-s%C3%A9m%C3%A1k-at-%C3%B6sszetett-kifejez%C3%A9sek-els%C5%91-r%C3%A9szkifejez%C3%A9s%C3%A9nek-%C3%A9rt%C3%A9k%C3%A9t">74. Hol tárolják el időlegesen a bemutatott kódgenerálási sémák at összetett kifejezések első részkifejezésének értékét?</h2>
+<ul>
+<li><span style="color:green">A veremben</span></li>
+</ul>
+<h2 id="75-mi-a-teend%C5%91-a-k%C3%B3dgener%C3%A1l%C3%A1si-s%C3%A9m%C3%A1kban-tal%C3%A1lhat%C3%B3-c%C3%ADmk%C3%A9kkel">75. Mi a teendő a kódgenerálási sémákban található címkékkel?</h2>
+<ul>
+<li><span style="color:green">A séma minden felhasználásakor egyedi címkéket kell generálni helyettük.</span></li>
+</ul>
+<h2 id="76-milyen-utas%C3%ADt%C3%A1s-z%C3%A1rja-le-a-k%C3%A9t%C3%A1g%C3%BA-el%C3%A1gaz%C3%A1s-igaz-%C3%A1g%C3%A1t">76. Milyen utasítás zárja le a kétágú elágazás igaz ágát?</h2>
+<ul>
+<li><span style="color:green">jmp</span></li>
+</ul>
+<h2 id="77-mi-alapj%C3%A1n-gener%C3%A1ljuk-a-v%C3%A1ltoz%C3%B3k-t%C3%A1rol%C3%A1s%C3%A1ra-haszn%C3%A1lt-mem%C3%B3riater%C3%BCletek-defin%C3%ADci%C3%B3j%C3%A1t">77. Mi alapján generáljuk a változók tárolására használt memóriaterületek definícióját?</h2>
+<ul>
+<li><span style="color:green">A szimbólumtábla alapján.</span></li>
+</ul>
+<h2 id="78-mikor-fut-a-t%C3%A1rgyk%C3%B3d">78. Mikor fut a tárgykód?</h2>
+<ul>
+<li><span style="color:green">Futási időben</span></li>
+</ul>
+<h2 id="79-milyen-eszk%C3%B6z%C3%B6kkel-hajtjuk-v%C3%A9gre-azokat-a-programokat-amelyeket-nem-kell-leford%C3%ADtani">79. Milyen eszközökkel hajtjuk végre azokat a programokat, amelyeket nem kell lefordítani?</h2>
+<ul>
+<li><span style="color:green">értelmezővel</span></li>
+</ul>
+<p>## 80. Milyen információhoz férhet hozzá egy JIT fordító, ami miatt esetenként hatékonyabb kódot generálhat, mint egy hagyományos fordító?</p>
+<ul>
+<li><span style="color:green">Futási idejű statisztikákhoz.</span></li>
+</ul>
+<h2 id="81-mi-a-ford%C3%ADt%C3%B3programok-elemz%C3%A9si-l%C3%A9p%C3%A9seinek-logikai-sorrendje">81. Mi a fordítóprogramok elemzési lépéseinek logikai sorrendje?</h2>
+<ul>
+<li><span style="color:green">lexikális, szintaktikus, szemantikus</span></li>
+</ul>
+<h2 id="82-melyik-%C3%A1ll%C3%ADt%C3%A1s-helyes">82. Melyik állítás helyes?</h2>
+<ul>
+<li><span style="color:green">A lexikális elemek a szintaktikus elemző nyelvtanának terminálisai.</span></li>
+</ul>
+<h2 id="83-melyik-%C3%A1ll%C3%ADt%C3%A1s-helyes">83. Melyik állítás helyes?</h2>
+<ul>
+<li><span style="color:green">Az assembly programot assembler fordítja gépi kódra.</span></li>
+</ul>
+<h2 id="84-mit-haszn%C3%A1lnak-k%C3%B6z%C3%B6sen-az-egyes-processek">84. Mit használnak közösen az egyes processek?</h2>
+<ul>
+<li><span style="color:green">Dinamikus könyvtárakat</span></li>
+</ul>
+<h2 id="85-h%C3%A1ny-tokent-k%C3%A9sz%C3%ADt-a-lexik%C3%A1lis-elemz%C5%91-a-k%C3%B6vetkez%C5%91-f%C3%BCggv%C3%A9nyh%C3%ADv%C3%A1sb%C3%B3l-absx-3">85. Hány tokent készít a lexikális elemző a következő függvényhívásból? abs(x-3)</h2>
+<ul>
+<li><span style="color:green">6</span></li>
+</ul>
+<h2 id="86-melyik-%C3%A1ll%C3%ADt%C3%A1sok-igazak">86. Melyik állítások igazak?</h2>
+<ul>
+<li><span style="color:green">A lexikális elemző mindaddig bővíti az éppen épített tokent, amíg esély van rá, hogy valamelyik reguláris kifejezés illeszkedni fog rá.</span></li>
+<li><span style="color:green">A prioritás elvét csak akkor használjuk, ha a leghosszabban illeszkedő karaktersorozat többféle token is lehetne.</span></li>
+</ul>
+<h2 id="87-mit-haszn%C3%A1lunk-lexik%C3%A1lis-elemz%C5%91-implement%C3%A1ci%C3%B3j%C3%A1hoz">87. Mit használunk lexikális elemző implementációjához?</h2>
+<ul>
+<li><span style="color:green">Véges determinisztikus automatákat.</span></li>
+</ul>
+<h2 id="88-milyen-extra-inform%C3%A1ci%C3%B3t-csatol-a-lexik%C3%A1lis-elemz%C5%91-egy-azonos%C3%ADt%C3%B3-szimb%C3%B3lumhoz">88. Milyen extra információt csatol a lexikális elemző egy azonosító szimbólumhoz?</h2>
+<ul>
+<li><span style="color:green">A token helyét és szövegét</span></li>
+</ul>
+<h2 id="89-mikor-egy%C3%A9rtelm%C5%B1-egy-nyelvtan">89. Mikor egyértelmű egy nyelvtan?</h2>
+<ul>
+<li><span style="color:green">Ha minden szóhoz egy szintaxisfa létezik</span></li>
+</ul>
+<h2 id="90-az-oper%C3%A1torok-mely-tulajdons%C3%A1gai-fontosak-szintaktikus-elemz%C3%A9sn%C3%A9l">90. Az operátorok mely tulajdonságai fontosak szintaktikus elemzésnél?</h2>
+<ul>
+<li><span style="color:green">Asszocativitás</span></li>
+<li><span style="color:green">Precendencia</span></li>
+</ul>
+<h2 id="91-melyik-elemz%C3%A9si-strat%C3%A9gia-%C3%A1ll%C3%ADtja-el%C5%91-a-legjobboldalibb-levezet%C3%A9sek-inverz%C3%A9t">91. Melyik elemzési stratégia állítja elő a legjobboldalibb levezetések inverzét?</h2>
+<ul>
+<li><span style="color:green">Alulról felfelé elemzés</span></li>
+</ul>
+<h2 id="92-melyek-a-helyes-p%C3%A1ros%C3%ADt%C3%A1sok">92. Melyek a helyes párosítások?</h2>
+<ul>
+<li><span style="color:green">Alulról felfelé elemzés - LR</span></li>
+<li><span style="color:green">Felülről lefelé elemzés - LL</span></li>
+</ul>
+<p>## 93. Miben segít az LL elemzés során az előreolvasás?</p>
+<ul>
+<li><span style="color:green">Az alkalmazandó szabály kiválasztásában.</span></li>
+</ul>
+<h2 id="94-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak">94. Mely állítások igazak?</h2>
+<ul>
+<li><span style="color:green">Van olyan nyelvtan, amely semelyik k természetes számra sem LL(k) tulajdonságú.</span></li>
+<li><span style="color:green">LL(3) nyelvtan esetén nem kell 3-nál több tokent előreolvasni a szabály kiválasztásához.</span></li>
+</ul>
+<h2 id="95-melyik-nyelvtani-szab%C3%A1lyokhoz-tartozhat-az-al%C3%A1bbi-elj%C3%A1r%C3%A1s-egy-rekurz%C3%ADv-lesz%C3%A1ll%C3%A1sos-elemz%C5%91b%C5%91l">95. Melyik nyelvtani szabályokhoz tartozhat az alábbi eljárás egy rekurzív leszállásos elemzőből?</h2>
+<pre class="hljs"><code><div>void A() {
+    if(next==a){
+        B();
+    } else if(next==b){
+    } else {
+        error();
+    }
+}
+</div></code></pre>
+<ul>
+<li><span style="color:green">A -&gt; B | ε </span></li>
+</ul>
+<h2 id="96-mit-tartalmaz-a-follow1alfa-halmaz">96. Mit tartalmaz a FOLLOW1(alfa) halmaz?</h2>
+<ul>
+<li><span style="color:green">Azon terminálisokat ( vagy # szimbólumokat), amelyek az alfát követhetik a levezetésekben.</span></li>
+</ul>
+<h2 id="97-mi-t%C3%B6rt%C3%A9nik-ha-egy-lr-elemz%C5%91-reduk%C3%A1l-az-a---%CE%B5-szab%C3%A1ly-alapj%C3%A1n">97. Mi történik, ha egy LR elemző redukál az A -&gt; ε szabály alapján?</h2>
+<ul>
+<li><span style="color:green">A verem mérete egyel nő.</span></li>
+</ul>
+<h2 id="98-mi-hat%C3%A1rozza-meg-az-lr1-elemz%C5%91t%C3%A1bl%C3%A1zatban-v%C3%A9grehajtand%C3%B3-utas%C3%ADt%C3%A1st">98. Mi határozza meg az LR(1) elemzőtáblázatban végrehajtandó utasítást?</h2>
+<ul>
+<li><span style="color:green">A verem tetején levő állapotsorszám és az előreolvasott token.</span></li>
+</ul>
+<h2 id="99-v%C3%A1lassza-ki-az-al%C3%A1bbiak-k%C3%B6z%C3%BCl-a-szemantikus-elemz%C3%A9s-feladatait">99. Válassza ki az alábbiak közül a szemantikus elemzés feladatait!</h2>
+<ul>
+<li><span style="color:green">Típusellenörzés vagy típuskikövetkeztetés</span></li>
+<li><span style="color:green">Deklaráltsággal kapcsolatos ellenőrzések</span></li>
+</ul>
+<h2 id="100-mit-kell-tenni-a-szimb%C3%B3lumt%C3%A1bl%C3%A1val-deklar%C3%A1ci%C3%B3-feldolgoz%C3%A1sakor">100. Mit kell tenni a szimbólumtáblával deklaráció feldolgozásakor?</h2>
+<ul>
+<li><span style="color:green">Keresni, majd beszúrni</span></li>
+</ul>
+<h2 id="101-melyik-lehet-b%C5%91vebb-a-m%C3%A1sikn%C3%A1l">101. Melyik lehet bővebb a másiknál?</h2>
+<ul>
+<li><span style="color:green">Hatáskör</span></li>
+</ul>
+<h2 id="102-mit-t%C3%A1rol-a-blokk-index-vektor">102. Mit tárol a blokk-index vektor?</h2>
+<ul>
+<li><span style="color:green">Mutatókat a szimbólumtábla egyes rekordjaira.</span></li>
+</ul>
+<h2 id="103-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak">103. Mely állítások igazak?</h2>
+<ul>
+<li><span style="color:green">A Haskell statikus típusozású és a fordítója típuslevezetést végez.</span></li>
+<li><span style="color:green">Statikus típusozás esetén általában nem kell típusinformációt tárolni futási időben.</span></li>
+</ul>
+<h2 id="104-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak">104. Mely állítások igazak?</h2>
+<ul>
+<li><span style="color:green">A szintetizált attribútumok a bal oldaon állnak abban a szabályban, ahol kiszámítják őket.</span></li>
+<li><span style="color:green">A kitüntetett szintetizált attribútumokat akár a lexikális elemző is beállíthatja.</span></li>
+<li><span style="color:green">Az örökölt attribútumok a szintaxisfában lefelé terjeszthetnek információkat.</span></li>
+<li><span style="color:green">Az örökölt attribútumok a jobb oldalon állnak abban a szabályban, ahol kiszámítjuk őket.</span></li>
+</ul>
+<h2 id="105-bisonban">105. Bisonban...</h2>
+<ul>
+<li><span style="color:green">vannak szintetizált attribútumok.</span></li>
+<li><span style="color:green">a $$-ral jelölt attribútumokat kell kiszámítani az akcióban.</span></li>
+</ul>
+<h2 id="106-mi-az-assembler">106. Mi az assembler?</h2>
+<ul>
+<li><span style="color:green">Assemblyt gépi kódra alakító fordítóprogram.</span></li>
+</ul>
+<h2 id="107-mekkora-m%C3%A9ret%C5%B1-az-eax-regiszter">107. Mekkora méretű az eax regiszter?</h2>
+<ul>
+<li><span style="color:green">Az ax méretének kétszerese.</span></li>
+<li><span style="color:green">4 bájtos</span></li>
+<li><span style="color:green">32 bites</span></li>
+</ul>
+<h2 id="108-%C3%B6sszes-h%C3%A1ny-b%C3%A1jtot-defini%C3%A1lunk-az-al%C3%A1bbi-deklar%C3%A1ci%C3%B3val-a-dd-01">108. Összes hány bájtot definiálunk az alábbi deklarációval? a: dd 0,1</h2>
+<ul>
+<li><span style="color:green">8</span></li>
+</ul>
+<h2 id="109-mely-utas%C3%ADt%C3%A1sok-helyesek">109. Mely utasítások helyesek?</h2>
+<ul>
+<li><span style="color:green">mov ah,bl</span></li>
+<li><span style="color:green">mov [x],edx</span></li>
+<li><span style="color:green">mov word [y],0</span></li>
+</ul>
+<h2 id="110-mit%C5%91l-f%C3%BCgg-hogy-a-je-utas%C3%ADt%C3%A1s-ugrik-e">110. Mitől függ, hogy a je utasítás ugrik-e?</h2>
+<ul>
+<li><span style="color:green">Az eflags regiszter egyik bitjétől.</span></li>
+</ul>
+<h2 id="111-melyik-regiszter-v%C3%A1ltoztatja-meg-a-push-utas%C3%ADt%C3%A1st">111. Melyik regiszter változtatja meg a push utasítást?</h2>
+<ul>
+<li><span style="color:green">esp</span></li>
+</ul>
+<h2 id="112-honnan-%22tudja%22-egy-f%C3%BCggv%C3%A9ny-hogy-a-sok-h%C3%ADv%C3%A1si-hely-k%C3%B6z%C3%BCl-mikor-melyikhez-kell-visszat%C3%A9rnie">112. Honnan &quot;tudja&quot; egy függvény, hogy a sok hívási hely közül mikor melyikhez kell visszatérnie?</h2>
+<ul>
+<li><span style="color:green">A vermen van ez az információ.</span></li>
+</ul>
+<h2 id="113-h%C3%A1nyas-grammatika-t%C3%ADpusnak-felel-meg-az-al%C3%A1bbi-szab%C3%A1ly-a---bbb">113. Hányas grammatika típusnak felel meg az alábbi szabály? A -&gt; bBb</h2>
+<ul>
+<li><span style="color:green">1</span></li>
+<li><span style="color:green">2</span></li>
+<li><span style="color:green">0</span></li>
+</ul>
+<h2 id="114-azqt%CE%B4zsub0subqsub0subf-rendezett-hetest-veremautomat%C3%A1nak-nevezz%C3%BCk-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak-az-egy-vermes-automat%C3%A1kkal-kapcsolatban">114. A=(Z,Q,T,δ,z<sub>0</sub>,q<sub>0</sub>,F) rendezett hetest veremautomatának nevezzük. Mely állítások igazak az egy vermes automatákkal kapcsolatban?</h2>
+<ul>
+<li><span style="color:green">A Z verem ábécé nem lehet üres.</span></li>
+<li><span style="color:green">A veremautomata minden gépi ciklus elején kivesz egy jelet a veremből.</span></li>
+</ul>
+<h2 id="115-h%C3%A1nyas-grammatika-t%C3%ADpusnak-felel-meg-az-al%C3%A1bbi-szab%C3%A1ly-a---b">115. Hányas grammatika típusnak felel meg az alábbi szabály? A -&gt; B</h2>
+<ul>
+<li><span style="color:green">2</span></li>
+<li><span style="color:green">0</span></li>
+<li><span style="color:green">3</span></li>
+<li><span style="color:green">1</span></li>
+</ul>
+<h2 id="116-azqt%CE%B4zsub0subqsub0subf-rendezett-hetest-veremautomat%C3%A1nak-nevezz%C3%BCk-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak-az-egy-vermes-automat%C3%A1kkal-kapcsolatban">116. A=(Z,Q,T,δ,z<sub>0</sub>,q<sub>0</sub>,F) rendezett hetest veremautomatának nevezzük. Mely állítások igazak az egy vermes automatákkal kapcsolatban?</h2>
+<ul>
+<li><span style="color:green">A verem automata működése nem biztos, hogy leáll.</span></li>
+<li><span style="color:green">A veremautomata minden gépi ciklus elején kivesz egy jelet a veremből.</span></li>
+<li>A Z verem ábécé lehet üres.</li>
+<li>A verem automata minden lépésben olvas egy karaktert az input szalagjáról.</li>
+</ul>
+<h2 id="117-a-szimb%C3%B3lumt%C3%A1bla-verm%C3%A9ben">117. A szimbólumtábla vermében ..</h2>
+<ul>
+<li><span style="color:green">felülről lefelé keresünk.</span></li>
+</ul>
+<h2 id="118-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak-az-al%C3%A1bbiak-k%C3%B6z%C3%BCl">118. Mely állítások igazak az alábbiak közül?</h2>
+<ul>
+<li><span style="color:green">Minden formális nyelv leírható grammatikával.</span></li>
+<li><span style="color:green">A programozási nyelvek szemantikája nem adható meg környezetfüggetlen grammatikával.</span></li>
+</ul>
+<h2 id="119-raab-h%C3%A1ny-%C3%A1llapot%C3%BA-az-r-regul%C3%A1ris-kifejez%C3%A9shez-tartoz%C3%B3-nyelvet-felismer%C5%91-minim%C3%A1lis-automata">119. R=(aa)*b hány állapotú az R reguláris kifejezéshez tartozó nyelvet felismerő minimális automata?</h2>
+<ul>
+<li><span style="color:green">4</span></li>
+</ul>
+<h2 id="120-mely-t%C3%A9telek-seg%C3%ADts%C3%A9g%C3%A9vel-bizony%C3%ADthat%C3%B3-hogy-egy-l-nyelv-nem-2-es-t%C3%ADpus%C3%BA">120. Mely tételek segítségével bizonyítható, hogy egy L nyelv nem 2-es típusú?</h2>
+<ul>
+<li><span style="color:green">Nagy Bar-Hillel lemma</span></li>
+<li><span style="color:green">Myhill-nerode tétel</span></li>
+</ul>
+<h2 id="121-melyik-%C3%A1ll%C3%ADt%C3%A1s-igaz">121. Melyik állítás igaz?</h2>
+<ul>
+<li><span style="color:green">Egy környezetfüggetlen nyelvtan pontosan akkor LL(1) tulajdonságú, ha az azonos baloldalú szabályok jobboldalainak FOLLOW_1 halmazai páronként diszjunktak.</span></li>
+</ul>
+<h2 id="122-amikor-a-bisonban-implement%C3%A1lt-ciklushoz-tartoz%C3%B3-k%C3%B3dgener%C3%A1l%C3%A1si-szab%C3%A1ly-lefut-akkor">122. Amikor a bisonban implementált, ciklushoz tartozó kódgenerálási szabály lefut, akkor ..</h2>
+<ul>
+<li><span style="color:green">meghívódik a ciklusmag kódját előállító rutin.</span></li>
+</ul>
+<h2 id="123-tekints%C3%BCk-a-gs-ab-p-s-grammatik%C3%A1t-ahol-p-s---asa--bb--%CE%B5-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak-lg-re">123. Tekintsük a G=({S}, {a,b}, P, S) grammatikát, ahol P: S -&gt; aSa | bb | ε. Mely állítások igazak L(G)-re?</h2>
+<ul>
+<li><span style="color:green">L(G) 1-es típusú</span></li>
+<li><span style="color:green">L(G) 2-es típusú</span></li>
+</ul>
+<h2 id="124-mely-%C3%A1ll%C3%ADt%C3%A1sok-igazak-az-al%C3%A1bbiak-k%C3%B6z%C3%BCl">124. Mely állítások igazak az alábbiak közül?</h2>
+<ul>
+<li><span style="color:green">Környezetfüggetlen grammatikával leírhatók a lexikális egységek.</span></li>
+<li><span style="color:green">Chomsky normál-formára hozhatók a reguláris nyelvtanok.</span></li>
+</ul>
+<h2 id="125-rbab-h%C3%A1ny-%C3%A1llapot%C3%BA-az-r-regul%C3%A1ris-kifejez%C3%A9shez-tartoz%C3%B3-nyelvet-felismer%C5%91-minim%C3%A1lis-automata">125. R=b(a|b)* hány állapotú az R reguláris kifejezéshez tartozó nyelvet felismerő minimális automata?</h2>
+<ul>
+<li><span style="color:green">3</span></li>
+</ul>
+<h2 id="126-tekints%C3%BCk-a-v-%C3%A1b%C3%A9c%C3%A9t-ekkor-1-minden-l-%E2%8A%86-v-nyelv-eset%C3%A9n-l%C3%B8--l-2-minden-l-%E2%8A%86-v-nyelv-est%C3%A9n-l%C3%B8--%C3%B8-melyik-%C3%A1ll%C3%ADt%C3%A1s-igaz">126. Tekintsük a V ábécét. Ekkor 1. Minden L ⊆ V* nyelv esetén LØ = L.  2. Minden L ⊆ V* nyelv estén LØ = Ø. Melyik állítás igaz?</h2>
+<ul>
+<li><span style="color:green">Csak a második</span></li>
+</ul>
+<h2 id="127-legyen-v-tetsz%C5%91leges-%C3%A1b%C3%A9c%C3%A9-%C3%A9s-l-%E2%8A%86-v-tetsz%C5%91leges-nyelv-ekkor-1-l0-nem-lehet-a-%C3%B8-nyelv-2-l-nem-lehet-a-%C3%B8-nyelv">127. Legyen V tetszőleges ábécé és L ⊆ V* tetszőleges nyelv. Ekkor 1. L0 nem lehet a Ø nyelv. 2. L+ nem lehet a Ø nyelv</h2>
+<ul>
+<li><span style="color:green">Csak a második</span></li>
+</ul>
+<h2 id="128-h%C3%A1nyas-grammatika-t%C3%ADpusnak-felel-meg-az-al%C3%A1bbi-szab%C3%A1ly-a---epszilon">128. Hányas grammatika típusnak felel meg az alábbi szabály? A -&gt; epszilon</h2>
+<ul>
+<li><span style="color:green">2</span></li>
+<li><span style="color:green">0</span></li>
+<li><span style="color:green">3</span></li>
+<li><span style="color:green">1</span></li>
+</ul>
+<h2 id="129-mely-%C3%A1llyt%C3%A1sok-igazak-az-al%C3%A1bbiak-k%C3%B6z%C3%BCl">129. Mely állytások igazak az alábbiak közül?</h2>
+<ul>
+<li><span style="color:green">Minden 3-mas típusú nyelv egyben 1.es típusú is.</span></li>
+<li><span style="color:green">Van olyan nyelv, ami nem írhatü le grammatikával.</span></li>
+<li><span style="color:green">Minden epszilon mentes 2-es típusú grammatika egyben 1-es típusú is.</span></li>
+</ul>
+<h2 id="130-rba-h%C3%A1ny-%C3%A1llapot%C3%BA-az-r-regul%C3%A1ris-kifejez%C3%A9shez-tartoz%C3%B3-nyelvet-felismer%C5%91-minim%C3%A1lis-automata">130. R=(ba)* hány állapotú az R reguláris kifejezéshez tartozó nyelvet felismerő minimális automata?</h2>
+<ul>
+<li><span style="color:green">3</span></li>
+</ul>
+<h2 id="131-hol-adjuk-%C3%A1t-a-f%C3%BCggv%C3%A9ny-aktu%C3%A1lis-param%C3%A9tereit">131. Hol adjuk át a függvény aktuális paramétereit?</h2>
+<ul>
+<li><span style="color:green">A veremben.</span></li>
+</ul>
+<h2 id="132-aqt%CE%B4qsub0subf-rendezett-%C3%B6t%C3%B6s-egy-v%C3%A9ges-determinisztikus-automat%C3%A1t-jel%C3%B6l-melyek-az-igaz-%C3%A1ll%C3%ADt%C3%A1sok-az-automat%C3%A1val-kapcsolatban">132. A=(Q,T,δ,q<sub>0</sub>,F) rendezett ötös egy véges determinisztikus automatát jelöl. Melyek az igaz állítások az automatával kapcsolatban?</h2>
+<ul>
+<li><span style="color:green">Az A mindig végig olvassa az inputjára helyezett szót.</span></li>
+<li><span style="color:green">A Q halmaz soha nem üres.</span></li>
+<li><span style="color:green">A δ egy kétváltozós függvény.</span></li>
+</ul>
+<h2 id="133-milyen-eszk%C3%B6z%C3%B6k-tartoznak-a-lexik%C3%A1lis-elemz%C3%A9shez">133. Milyen eszközök tartoznak a lexikális elemzéshez?</h2>
+<ul>
+<li><span style="color:green">Reguláris kifejezés, véges determinisztikus automata</span></li>
+</ul>
+<p>## 134. R = (aa)*b. Hány állapotú az R reguláris kifejezéshez tartozó nyelvet felismerő minimális automata?</p>
+<ul>
+<li><span style="color:green">4</span></li>
+</ul>
+<h2 id="135-mi-igaz-az-el%C5%91ad%C3%A1s-sor%C3%A1n-bemutatott-k%C3%B3dgener%C3%A1l%C3%A1si-szab%C3%A1lyokkal-egy-%C3%A9rt%C3%A9kad%C3%B3-utas%C3%ADt%C3%A1shoz-gener%C3%A1lt-k%C3%B3dra">135. Mi igaz az előadás során bemutatott kódgenerálási szabályokkal egy értékadó utasításhoz generált kódra?</h2>
+<ul>
+<li><span style="color:green">Legfeljebb két utasítást eredményez.</span></li>
+</ul>
+
+</body>
+</html>
