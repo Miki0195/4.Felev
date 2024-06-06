@@ -6,6 +6,12 @@
 Regresszió és klasszifikáció feladata, különbségek. Egy- és többváltozós lineáris regresszió: hipotézisfüggvény, költségfüggvény, megoldás gradiens módszerrel, alkalmazásai.
 - [3. Tétel](#3tétel)   
 Alultanulás és túltanulás jellemzői, felismerésük. Hiperparaméterek, példák. A modell betanításának és kiértékelésének lépései validációs halmazzal. A túltanulás kezelése (mintaelemek/paraméterek száma, early stopping, adataugmentáció, zaj, dropout).
+- [4. Tétel](#4tétel)  
+Mesterséges neuron modell. Teljesen összekötött rétegek és a Multilayer Perceptron (MLP) modell felépítése, paraméterei, hipotézisfüggvénye, aktivációs függvények, költségfüggvények, skalár és vektor alakú címke, regresszió, bináris- és multi-class klasszifikáció esetén (log. loss, CE képlete nem kell fejből).
+- [5. Tétel](#5tétel)  
+Számítási gráfok és a backpropagation algoritmus. Backpropagation példa feladat megoldása papíron.
+- [6. Tétel](#6tétel)  
+Az MLP modell gyengesége képfeldolgozásban. Diszkrét konvolúció és konvolúciós réteg, pooling réteg hipotézisfüggvények. Konvolúciós háló felépítése (LeNet-5 architektúra) és működésének lényege, hierarchikus mintázatfelismerés, transzláció (eltolás) invariancia. Padding, stride (lépésköz) fogalma.
 - [7. Tétel](#7tétel)  
 Transfer learning és lépései (mérlegelendő szempontok a háló átalakításánál, finomhangolásánál). Súlyok befagyasztása. Mélyhálók és problémáik: a gradiens skálázódása. Az instabil gradiens probléma és elkerülése: batch normalization és reziduális hálók.
 - [8. Tétel](#8tétel)  
@@ -291,6 +297,159 @@ A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt 
 ## Összefoglalás  
 Az alultanulás és a túltanulás megértése és kezelése kritikus fontosságú a gépi tanulási modellek fejlesztésében. Az alultanulás során a modell nem képes megtanulni az adatokat megfelelően, míg a túltanulás során túl jól tanulja meg a tanuló adatok mintáit, beleértve a zajokat is. A hiperparaméterek megfelelő beállítása, a validációs halmaz használata, és a túltanulás elleni technikák alkalmazása mind segíthetnek abban, hogy a modell jól általánosítható legyen és pontos előrejelzéseket készítsen új adatokon.  
 
+---
+# 4.Tétel
+
+# 5.Tétel
+## Számítási gráfok
+>A számítási gráfok olyan modellek, amelyek matematikai műveleteket és azok közötti kapcsolatokat ábrázolják gráf szerkezetben. Ezek a gráfok segítenek szemléltetni, hogyan dolgozzák fel a különböző műveleteket egy algoritmus vagy egy rendszer, és lehetővé teszik a hatékony számítások végrehajtását.
+
+>A számítási gráfok hasznosak a gépi tanulásban és a mély tanulásban, mivel lehetővé teszik a neurális hálózatok működésének vizualizációját és azok matematikai műveleteinek hatékony végrehajtását. Két fő típusa létezik.
+
+**Előrecsatolt Gráfok:**  
+>Az előrecsatolt gráfokban a műveletek egy irányított gráfot alkotnak, amelyben a csomópontok a műveleteket, az élek pedig azokat a bemeneteket és kimeneteket reprezentálják, amelyek a műveletek közötti kapcsolatot biztosítják. Ezek a gráfok az előrecsatolt neurális hálózatok működését ábrázolják.
+
+**Dinamikus Gráfok:**  
+>A dinamikus gráfok olyan gráfok, amelyeket futási időben hoznak létre és módosítanak. Ezek a gráfok rugalmasabbak és alkalmazhatóbbak bizonyos problémák megoldására, ahol a struktúra változhat a futási idő során.
+
+## Backpropagation Algoritmus
+>A backpropagation algoritmus a mesterséges neurális hálózatok tanításának egyik legfontosabb módszere, amely lehetővé teszi a hálózat súlyainak és paramétereinek optimalizálását a tanító adatok alapján. A backpropagation algoritmus a gradiens módszer egy speciális esete, amely a hálózat hibájának visszaterjesztésén keresztül számolja ki a hálózat súlyainak módosításához szükséges gradienseket.
+
+**1. Előreterjesztés (Forward Propagation):**  
+- Az előreterjesztés során a bemeneti adatokat a hálózaton keresztül továbbítjuk, és kiszámítjuk a hálózat kimenetét. Ez a folyamat minden rétegre vonatkozóan a következő lépéseket tartalmazza:
+    - **Súlyozott összegezés:** A bemenetek és a súlyok szorzatainak összegzése.
+    - **Aktivációs függvény alkalmazása:** Az összegzett értékek aktivációs függvényen keresztül történő átadása.
+
+**2. Hibafüggvény Számítása:**  
+- A hibafüggvény kiszámítása a kimeneti réteg kimenete és a várt kimenet közötti különbség alapján. Ez általában a négyzetes hiba vagy keresztentrópia hiba lehet.
+
+**3. Visszaterjesztés (Backpropagation):**  
+- A visszaterjesztés során a hiba visszaterjed a hálózaton keresztül, és a gradienseket számítjuk a súlyok szerint, hogy megtudjuk, mennyire kell változtatni őket a hiba minimalizálása érdekében. Ez a folyamat minden rétegre vonatkozóan a következő lépéseket tartalmazza:
+    - **Hiba visszaterjesztése:** A hibát visszaterjesztjük az előző rétegbe a súlyok szerinti gradiensek kiszámításához.
+    - **Gradiensek kiszámítása:** A gradiensek számítása az aktuális réteg súlyai szerint a hiba alapján.
+    - **Súlyok módosítása:** A súlyokat módosítjuk a gradiensek segítségével a gradiens módszer vagy annak valamilyen változata szerint.
+
+**4. Optimalizációs Algoritmus használata:**  
+- Az optimalizációs algoritmus segítségével módosítjuk a súlyokat a tanulási ráta, a momentum és más hiperparaméterek alapján.
+---
+# 6.Tétel
+## Az MLP Modell Gyengeségei Képfeldolgozásban
+>A Multilayer Perceptron (MLP) modell képes összetett mintázatok felismerésére, de képfeldolgozásban számos gyengesége van.
+
+**Nagy Bemeneti Méret:** 
+- A képek általában nagy méretűek (például egy 28x28 pixeles kép 784 bemeneti neuront igényel).
+- A nagy bemeneti méret miatt az MLP-k rengeteg paraméterrel rendelkeznek, ami nagy számítási és memóriaigényt eredményez.
+
+**Lokális Mintázatok Figyelmen Kívül Hagyása:**  
+- Az MLP minden bemeneti pixelt egyformán kezel, figyelmen kívül hagyva a lokális mintázatokat.
+- A képekben a szomszédos pixelek közötti korrelációk fontosak, de az MLP-k nem képesek ezeket hatékonyan kihasználni.
+
+**Transzlációs Invariancia Hiánya:**
+- Az MLP nem képes felismerni, ha egy objektum különböző helyeken jelenik meg a képen.
+- Minden pozícióra különböző súlyokat kell tanulnia, ami növeli a modell komplexitását.
+---
+## Diszkrét Konvolúció és Konvolúciós Réteg
+### Diszkrét Konvolúció
+>A diszkrét konvolúció egy matematikai művelet, amely két diszkrét függvény (például egy kép és egy szűrő) kombinációját eredményezi. A konvolúciós művelet a bemeneti adatok és a szűrő közötti korrelációkat számítja ki.
+
+Matematikailag egy képre és egy szűrőre alkalmazott diszkrét konvolúció így néz ki: ...
+
+### Konvolúciós Réteg
+>A konvolúciós réteg egy neuronális hálózatban olyan réteg, amely konvolúciós műveleteket végez. Minden szűrő (kernel) végigcsúszik a bemeneti képen, és egy kimeneti térképet (feature map) hoz létre.
+
+**Szűrők (Kernelek):**  
+- A szűrők kis méretűek (például 3x3, 5x5), és a bemeneti kép különböző régióira alkalmazva új feature map-eket hoznak létre.
+- A szűrők paramétereit a hálózat tanulja meg.
+
+**Aktivációs Függvények:**  
+- A konvolúciós műveletek után az aktivációs függvény (például ReLU) alkalmazása segít a nemlinearitás bevezetésében.
+
+## Pooling Réteg
+>A pooling réteg csökkenti a térbeli dimenziókat, miközben megőrzi a fontos információkat. Ez segít a modellnek a transzlációs invariancia elérésében.
+
+**Max Pooling:**  
+- A leggyakrabban használt pooling módszer, amely a pooling ablakban található legnagyobb értéket választja ki.
+- **Példa:** Egy 2x2-es pooling ablak esetén a négy érték közül a legnagyobbat választjuk ki.
+
+**Average Pooling:**  
+- Az pooling ablakban található értékek átlagát számítja ki.
+
+## Konvolúciós Háló Működése
+>Olyan neurális hálózat, amely különösen hatékony a képfeldolgozási feladatok megoldására. A lényege abban rejlik, hogy a hálózat tanulja meg az adott képekben található fontos mintázatokat és jellemzőket.  
+
+>A konvolúciós hálózatok kiválóak a képfeldolgozási feladatokban, mert képesek lokalizálni és kinyerni a fontos jellemzőket a képek különböző részeiből, és a tanulás során kevésbé függenek a képek általános pozíciójától vagy kisebb transzlációs változásaitól. A konvolúciós rétegek paramétereinek (pl. szűrő mérete, szám, stride, padding stb.) megfelelő beállítása kulcsfontosságú a hálózat hatékonysága és teljesítménye szempontjából.
+
+## Konvolúciós Háló Felépítése (LeNet-5 Architektúra)
+>A LeNet-5 az egyik első sikeres konvolúciós neurális háló (CNN) architektúra, amelyet kifejezetten a képfeldolgozásra terveztek.
+
+**Bemeneti Réteg:**
+- A bemeneti kép mérete 32x32 pixeles.
+
+**C1 Konvolúciós Réteg:**
+- Hat 5x5 méretű szűrőt használ, ami 6 különböző 28x28 méretű feature map-et eredményez.
+- Az aktivációs függvény a sigmoid.
+
+**S2 Pooling Réteg:**
+- A C1 réteg 2x2-es ablakokat használó average pooling rétege.
+- Ez 6 különböző 14x14 méretű feature map-et eredményez.
+
+**C3 Konvolúciós Réteg:**
+- 16 darab 5x5 méretű szűrőt használ, ami 16 különböző 10x10 méretű feature map-et eredményez.
+- Az aktivációs függvény a sigmoid.
+
+**S4 Pooling Réteg:**
+- A C3 réteg 2x2-es ablakokat használó average pooling rétege.
+- Ez 16 különböző 5x5 méretű feature map-et eredményez.
+
+**C5 Konvolúciós Réteg:**
+- 120 darab 5x5 méretű szűrőt használ, ami 120 különböző 1x1 méretű feature map-et eredményez (teljesen kapcsolódó réteg).
+
+**F6 Teljesen Kapcsolódó Réteg:**
+- 84 neuront tartalmaz, és a bemenete a C5 réteg kimenete.
+
+**Output Réteg:**
+- 10 neuront tartalmaz (egy-egy az osztályoknak), és a kimenet a softmax függvény alkalmazása után kerül ki.
+
+## Hierarchikus Mintázatfelismerés
+>A hierarchikus mintázatfelismerés egy olyan folyamat, amely során egy rendszer a bemeneti adatokat különböző absztrakt szinteken elemzi és dolgozza fel. Ebben az esetben a rendszer egy konvolúciós neurális hálózat (CNN) lehet, amely képes felismerni az alacsony szintű, egyszerűbb mintázatoktól kezdve a magasabb szintű, komplexebb mintázatokig terjedő jellemzőket.
+
+>Például, egy képfeldolgozási feladat során az alacsony szintű jellemzők lehetnek élek, sarkok vagy színek, míg a magasabb szintű jellemzők lehetnek objektumok, arcok vagy emberek.
+
+>A hierarchikus felismerés előnye, hogy a rendszer hatékonyan tudja reprezentálni és felismerni az egyre összetettebb jellemzőket, miközben azokat a bemeneti adatokat dolgozza fel, amelyeket egyre magasabb absztrakciós szinten kezel.
+
+>A konvolúciós hálózatok hierarchikus mintázatfelismerése több szinten történik:
+
+**Alacsony Szintű Jellemzők:**
+- Az alsóbb rétegek egyszerű mintázatokat tanulnak, mint például élek és sarkok.
+
+**Középszintű Jellemzők:**
+- A középső rétegek bonyolultabb mintázatokat tanulnak, mint például textúrák és formák.
+
+**Magas Szintű Jellemzők:**
+- A felsőbb rétegek komplex mintázatokat és objektumokat ismernek fel.
+
+## Transzláció Invariancia
+>A transzláció invariancia azt jelenti, hogy a rendszer kimenete (például osztályozás vagy regresszió) nem változik, ha a bemeneti adatok eltolódnak (transzláció). Más szavakkal, a rendszernek nem kell érzékelnie vagy figyelembe vennie az objektumok pontos pozícióját vagy elhelyezkedését a bemeneten ahhoz, hogy hatékonyan működjön.
+
+>A konvolúciós neurális hálózatok (CNN-ek) hajlamosak transzlációs invarianciát kialakítani, mivel a konvolúciós rétegek révén a hálózat képes az objektumok különböző pozícióiban található jellemzőket hatékonyan felismerni. Ezt a tulajdonságot pooling rétegek is erősítik, amelyek csökkentik a térbeli dimenziókat, miközben megőrzik a fontos információkat.
+
+## Padding
+>A padding azt jelenti, hogy nullákkal (vagy más értékekkel) kiegészítjük a bemeneti adatokat a konvolúciós művelet előtt. Ennek a célja lehet például a kimeneti feature map méretének megtartása vagy a szélek információinak megőrzése. Két fő célja van:
+
+**Méret Megőrzése:**
+- Biztosítja, hogy a kimeneti feature map mérete megegyezzen a bemeneti kép méretével.
+
+**Szélek Információjának Megőrzése:**
+- Megőrzi a bemeneti kép szélein található információkat, amelyeket a konvolúciós művelet egyébként elveszítene.
+
+## Stride (Lépésköz)
+>A stride az a lépésköz, amelyet a szűrő egy konvolúciós művelet során tesz. Két fő típus van:
+
+**Stride = 1:**
+- A szűrő egy pixellel lép tovább a bemeneti képen, ami nagyobb kimeneti feature map-et eredményez.
+
+**Stride > 1:**
+- A szűrő több pixellel lép tovább, ami kisebb kimeneti feature map-et eredményez.
 ---
 # 7.Tétel
 ## Transfer Learning és lépései
