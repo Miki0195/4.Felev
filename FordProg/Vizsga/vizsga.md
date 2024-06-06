@@ -8,7 +8,7 @@
 - 6.Előadás
 ## Fordítóprogramok
 - [7. Előadás](#part-7)
-- 8.Előadás
+- [8.Előadás](#part-8)
 - 9.Előadás
 - 10.Előadás
 - 11.Előadás
@@ -246,6 +246,41 @@ Magas színtű programozási nyelv -> **Fordítóprogram** -> Gépi kód
     - Bemenet: Karaktersorozat
     - Kimenet: Lexikális elemek sorozata + lexikális hibák
     - Eszközök: Reguláris kifejezések, véges determinisztikus automaták
+
+
+# Part 8
+## Lexikális elemző
+**Feladat:** A forrásszöveg elemi egységekre tagolása  
+**Bemenet:** Karaktersorozat  
+**Kimenet:** Lexikális elemek sorozata + lexikális hibák  
+**Eszközök:** Reguláris kifejezések, véges determinisztikus automaták  
+
+**Szóközök, tabok, újsorok nem alkotnak tokeneket**
+  - Más tokenek elválasztására valók
+  - Lexikális elemző felismeri ezeket
+  - Nem továbbítja szintaktikus elemző felé  
+
+**Leghosszabb illeszkedés elve:** A leghosszabban illeszkedő karaktersorozatokból képzünk tokent.  
+**Prioritás elve:** Ha a leghosszabban illeszkedő karaktersorozat több reguláris kifejezésre is illeszkedik, a sorrendben korábban álló nyer.  
+### Lexikális elemző létrehozása
+**Nyelv definiálása:** Tokendefiníciók reguláris kifejezésekkel.  
+**Fordítóprogram implementációja:** Lexikáliselemzőgenerátor vagy programozó.  
+**A fordítóprogram működése:** Karaktersorozat a forrásfájlból -> Lexikális elemző -> Tokensorozat vagy lexikális hiba.  
+
+### Tokenekhez csatolt információk
+- Felismert tokenekhez kiegésztő információkat csatol a lexikális elemző.
+- **Minden tokenhez:** Pozíció (első karakter sor, oszlop + utolsó karakter sor, oszlop) -> Hibaüzenetekhez, refaktoráláshoz
+- **Azonosítókhoz:** Azonosító szövege -> szemantikus elemzéshez
+- **Literálokhoz:** Literál értéke -> kódgeneráláshoz, kódoptimalizációhoz
+
+### Lexikális hibák
+- Lexikális hiba esetén hibajelzést ad a fordító, és folytatja az elemzést
+- **Illegális karakter:** Nyelv ábécéjében nem definiált karakterek -> Az addig felépített token kiadása, ha volt illeszkedés -> Illegális karakter követő karakterrel folytatódik az elemzés
+- **Lezáratlan String:** Sor végén derül ki -> Következő sorban folytatódik az elemzés
+- **Lezáratlan több soros megjegyzés:** Fájl végén derül ki -> Nincsen további elemzés
+
+# Part 9 
+ 
 
 
 
