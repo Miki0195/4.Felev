@@ -196,7 +196,7 @@ A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt 
     - **Epoch-száma:**  
     Az epoch-szám meghatározza, hogy a tanulási algoritmus hány teljes iterációt hajt végre a tanító adatokon. Egy epoch egy teljes tanító adat halmazt jelent. A megfelelő epoch-szám kiválasztása lehetővé teszi a modell számára, hogy tanuljon és illeszkedjen a tanító adatokhoz, anélkül hogy túl sokat tanulna.
     - **Batch-méret:**   
-    Az epoch-szám meghatározza, hogy a tanulási algoritmus hány teljes iterációt hajt végre a tanító adatokon. Egy epoch egy teljes tanító adat halmazt jelent. A megfelelő epoch-szám kiválasztása lehetővé teszi a modell számára, hogy tanuljon és illeszkedjen a tanító adatokhoz, anélkül hogy túl sokat tanulna.
+    A batch-méret meghatározza, hogy hány adatpontot használunk minden egyes frissítéshez a gradiens módszer során. A kisebb batch-méretek gyorsabb frissítéseket eredményeznek, míg a nagyobb batch-méretűek stabilabb frissítéseket biztosítanak. A megfelelő batch-méret kiválasztása lehetővé teszi a hatékony tanulást és a számítások optimalizálását.
 ---
 ## A modell betanításának és kiértékelésének lépései validációs halmazzal
 ### 1. Adatok felosztása:
