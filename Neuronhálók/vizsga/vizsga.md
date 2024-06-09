@@ -169,7 +169,7 @@ A gradiens módszer (Gradient Descent) egy iteratív optimalizációs algoritmus
 Az egyes paraméterek frissítése:
 ![Gradiens módszer](gradiensmodszer.png "Gradiens módszer") 
 
-### Alkalmazások
+## Alkalmazások
 
 Alkalmazásukban nagy különbés nincs, többváltozós lineáris regressziót akkor használjuk inkább, amikor több bemeneti változó határozza meg a kimeneti változót, például házárak becslése során, amikor több tényező is befolyásolhatja az árat.
 
@@ -219,6 +219,19 @@ A többváltozós logisztikus regresszió esetén több bemeneti változót hasz
 
 A **költésgfüggvény** és a **megoldás gradiens módszerrel** megegyezik az egyszerű/egyváltozós esettel!
 
+## Alkalmazások
+Alkalmazásukban nagy különbés nincs, többváltozós lineáris regressziót akkor használjuk inkább, amikor több bemeneti változó határozza meg a kimeneti változót, például házárak becslése során, amikor több tényező is befolyásolhatja az árat.
+### Egyváltozós Lineáris Regresszió
+- **Pénzügyi elemzés:** Egyváltozós lineáris regressziót alkalmazhatunk például a részvényárak vagy áruk jövőbeli alakulásának előrejelzésére.
+- **Marketing:** A termékértékesítés összefüggéseit modellezhetjük, például a hirdetési költség és a termékek eladása közötti kapcsolatot.
+- **Környezetvédelem:** Az egyváltozós lineáris regressziót használhatjuk például az időjárási minták elemzésére vagy az éghajlatváltozás hatásainak vizsgálatára.
+
+### Többváltozós Lineáris Regresszió:
+- **Gazdasági előrejelzés:** Többváltozós lineáris regressziót használhatunk például a GDP növekedésének előrejelzésére, figyelembe véve több gazdasági mutatót, mint például a munkanélküliségi ráta, a fogyasztás stb.
+- **Orvosi kutatás:** A betegségek kockázati tényezőit és az egészségügyi mutatók közötti összefüggéseket vizsgálhatjuk, hogy megértsük például az elhízás vagy a dohányzás egészségügyi következményeit.
+- **Termelési tervezés:** A gyártási folyamatok hatékonyságának növelésére és az erőforrások optimalizálására használhatjuk a többváltozós lineáris regressziót, például a termelési költségek vagy a termelési idő becslésére.
+
+---
 # 4.Tétel
 ## Alultanulás és túltanulás jellemzői, felismerésük
 ### Alultanulás
