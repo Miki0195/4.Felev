@@ -5,6 +5,7 @@
 - [2. Tétel](#2tétel)   
 Regresszió és klasszifikáció feladata, különbségek. Egy- és többváltozós lineáris regresszió: hipotézisfüggvény, költségfüggvény, megoldás gradiens módszerrel, alkalmazásai.
 - [3. Tétel](#3tétel)   
+Regresszió és klasszifikáció feladata, különbségek. Egy- és többváltozós logisztikus regresszió: hipotézisfüggvény, költségfüggvény, megoldás gradiens módszerrel, alkalmazásai.
 - [4. Tétel](#4tétel)   
 Alultanulás és túltanulás jellemzői, felismerésük. Hiperparaméterek, példák. A modell betanításának és kiértékelésének lépései validációs halmazzal. A túltanulás kezelése (mintaelemek/paraméterek száma, early stopping, adataugmentáció, zaj, dropout).
 - [5. Tétel](#5tétel)  
@@ -82,7 +83,25 @@ A gradiens módszer egy iteratív optimalizációs algoritmus, amely a költség
 A frissítés szabálya:
 
 ![Gradiens módszer](gradiensmodszer.png "Gradiens módszer")  
-ahol α a tanulási ráta, amely meghatározza a lépés nagyságát.
+ahol α a tanulási ráta, amely meghatározza a lépés nagyságát.   
+
+Az optimalizálási folyamat futtatását a gradiens módszer esetében több kritérium alapján lehet befejezni:
+- **Maximális Iterációszám:**   
+Az optimalizálási algoritmus egy előre meghatározott maximális iterációszámot ér el. Ha ez a szám teljesült, az algoritmus megáll.
+- **Konvergencia Kritérium:**   
+A költségfüggvény változása két egymást követő iteráció között elég kicsi. Azaz, ha a költségfüggvény értéke egy előre meghatározott kis értékkel (ϵ) csökken, akkor az algoritmus megáll.
+- **Gradiens Nagysága:**   
+Az algoritmus megáll, ha a gradiens nagysága egy előre meghatározott kis értéknél (ϵ) kisebb.  
+
+A gradiens módszer nem mindig találja meg a globális minimumot több okból:
+- **Nem Konvex Költségfüggvény:**  
+ Sok gépi tanulási probléma nem konvex költségfüggvénnyel rendelkezik, amely több lokális minimumot tartalmazhat. A gradiens módszer hajlamos a legközelebbi lokális minimumhoz konvergálni, különösen akkor, ha az inicializálás nem optimális.
+- **Gradiens Iránya:**   
+A gradiens irány mindig a legnagyobb meredekség irányába mutat, ami nem garantálja, hogy a globális minimumhoz vezet, különösen nem konvex függvények esetén.
+- **Tanulási Ráta:**   
+Ha a tanulási ráta túl nagy, az optimalizálás ugrálhat a minimum körül és esetleg nem talál stabil minimumot. Ha túl kicsi, az optimalizálás nagyon lassan konvergálhat, és fennáll a veszélye, hogy lokális minimumokba ragad. 
+
+A gradiens egy többváltozós függvény irányított származéka, amely megmutatja a függvény növekedésének legmeredekebb irányát az aktuális pontban. Az optimalizálás során a gradiens irányába történő mozgás csökkenti a költségfüggvény értékét. Az aktuális paraméterértékek frissítése a negatív gradiens irányába történik. A negatív gradiens irányába való mozgás tehát az aktuális pozíciót a költségfüggvény legmeredekebb csökkenésének irányába viszi, ami segít a minimum megtalálásában.
 
 **Update-módszer**  
 Az update-módszer (vagy optimalizálási algoritmus) egy olyan módszer vagy algoritmus, amely a neurális hálózat súlyait és paramétereit frissíti és optimalizálja a tanulási folyamat során. Az update-módszer lényegében meghatározza, hogy hogyan módosítsuk a hálózat paramétereit annak érdekében, hogy a költségfüggvény értéke csökkenjen, és a hálózat a tanuló adatokra jobban illeszkedjen.
@@ -116,7 +135,7 @@ A klasszifikáció célja, hogy az input adatok alapján egy adott kategóriába
 - **Feladat típusa:** Regresszió előrejelzést készít, klasszifikáció osztályoz.
 - **Értékelési metrikák:** Regresszióban gyakori metrikák az MSE, RMSE, MAE, míg klasszifikációban a pontosság, F1-score, ROC-AUC.
 
-### Egy- és többváltozós lineáris regresszió
+## Egy- és többváltozós lineáris regresszió
 ### Hipotézisfüggvény
 **Egyszerű (egyváltozós) lineáris regresszió**  
 A hipotézisfüggvény egy lineáris összefüggést ír le a független változó (bemenet) és a függő változó (kimenet) között. Az egyszerű lineáris regresszió egyetlen független változót használ a célváltozó előrejelzéséhez. A hipotézisfüggvény a következőképpen néz ki:  
@@ -165,28 +184,64 @@ A regresszió és a klasszifikáció közötti különbségek alapvetőek, mivel
 
 ---
 # 3.Tétel
+### Regresszió  
+A regresszió feladata az, hogy a függő változót (célváltozó, y) egy vagy több független változó (input változók, X) alapján előre jelezze. A cél itt a folytonos értékek előrejelzése, például házárak, hőmérséklet, vagy a részvényárfolyamok. A regresszió leggyakoribb típusa a lineáris regresszió, de számos más típus is létezik, mint például a polinomiális regresszió, a logisztikus regresszió (bár ez gyakran a klasszifikációval azonosítják) és a Ridge regresszió.
+
+### Klasszifikáció
+A klasszifikáció célja, hogy az input adatok alapján egy adott kategóriába sorolja a megfigyeléseket. Itt a célváltozó diszkrét értékekkel bír, például az email spam vagy nem spam kategóriába sorolása, vagy a betegek diagnosztizálása egy adott betegségre vagy annak hiányára. A klasszifikáció algoritmusai közé tartozik a logisztikus regresszió, a döntési fák, a támogatott vektor gépek (SVM) és a neurális hálózatok.
+
+**Különbségek**
+- **Kimeneti változó típusa:** Regresszió esetén folytonos, klasszifikáció esetén diszkrét.
+- **Feladat típusa:** Regresszió előrejelzést készít, klasszifikáció osztályoz.
+- **Értékelési metrikák:** Regresszióban gyakori metrikák az MSE, RMSE, MAE, míg klasszifikációban a pontosság, F1-score, ROC-AUC.
+
+## Logisztikus Regresszió
+A logisztikus regresszió egy statisztikai modell, amelyet bináris és többosztályos klasszifikációs feladatokra használnak. Az alapja a logisztikus függvény, amely az input változókat valószínűségekké alakítja.
+
+### Egyszerű Logisztikus Regresszió
+
+#### Hipotézisfüggvény
+A logisztikus regresszió hipotézisfüggvénye a logisztikus (sigmoid) függvény, amely a bemeneti adatokat egy 0 és 1 közötti valószínűségbe transzformálja.
+![Négyzetes hibaösszeg](adom.png "Négyzetes hibaösszeg")
+
+#### Költségfüggvény
+A logisztikus regresszió költségfüggvénye a log-veszteség (log loss), amely mérni hivatott, mennyire jól illeszkedik a modell a tanító adatokra.
+![Négyzetes hibaösszeg](adom3.png "Négyzetes hibaösszeg")
+
+#### Megoldás Gradiens Módszerrel
+A gradiens módszer segítségével a paramétereket úgy frissítjük, hogy minimalizáljuk a költségfüggvényt. A paraméterek frissítési szabálya:
+![Négyzetes hibaösszeg](adom2.png "Négyzetes hibaösszeg")
+
+### Többváltozós Logisztikus Regresszió
+#### Hipotézisfüggvény
+A többváltozós logisztikus regresszió esetén több bemeneti változót használunk a kimeneti változó előrejelzéséhez. A hipotézisfüggvény ugyanaz marad, de több jellemzőt tartalmaz:
+![Négyzetes hibaösszeg](adom4.png "Négyzetes hibaösszeg")
+
+A **költésgfüggvény** és a **megoldás gradiens módszerrel** megegyezik az egyszerű/egyváltozós esettel!
 
 # 4.Tétel
 ## Alultanulás és túltanulás jellemzői, felismerésük
 ### Alultanulás
 **Jellemzői:**  
->A modell nem tanulja meg megfelelően az adatok mögötti mintákat, ezért alacsony teljesítményt nyújt mind a tanuló, mind a teszt adathalmazon.
+A modell nem tanulja meg megfelelően az adatok mögötti mintákat, ezért alacsony teljesítményt nyújt mind a tanuló, mind a teszt adathalmazon.
 Egyszerű modellek, kevés paraméterrel (pl. lineáris regresszió egy bonyolult, nem lineáris adathalmazra).
 Magas bias (elfogultság): a modell leegyszerűsíti a problémát, nem képes komplexitást kezelni.  
 
 **Felismerése:**  
->A tanulási és tesztelési hiba magas.
+A tanulási és tesztelési hiba magas.
 A hiba nem csökken a modell tanítása során.
+
 ---
 ### Túltanulás
 **Jellemzői:**  
->A modell túl jól megtanulja a tanuló adatok mintáit, beleértve a zajokat és a véletlen ingadozásokat is.
+A modell túl jól megtanulja a tanuló adatok mintáit, beleértve a zajokat és a véletlen ingadozásokat is.
 Komplex modellek, sok paraméterrel (pl. mély neurális hálózat kevés adaton).
 Alacsony bias, magas variancia: a modell jól teljesít a tanuló adathalmazon, de gyengén a teszt adathalmazon.
 
 **Felismerése:**  
->Alacsony hiba a tanuló adathalmazon, de magas hiba a teszt adathalmazon.
+Alacsony hiba a tanuló adathalmazon, de magas hiba a teszt adathalmazon.
 A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt adatokon.
+
 ---
 ### Hiperparaméterek
 - Ezek a paraméterek meghatározzák a tanulási folyamat körülményeit és a modell architektúráját, és közvetlenül befolyásolják a tanulási folyamat eredményességét és hatékonyságát.
@@ -197,6 +252,7 @@ A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt 
     Az epoch-szám meghatározza, hogy a tanulási algoritmus hány teljes iterációt hajt végre a tanító adatokon. Egy epoch egy teljes tanító adat halmazt jelent. A megfelelő epoch-szám kiválasztása lehetővé teszi a modell számára, hogy tanuljon és illeszkedjen a tanító adatokhoz, anélkül hogy túl sokat tanulna.
     - **Batch-méret:**   
     A batch-méret meghatározza, hogy hány adatpontot használunk minden egyes frissítéshez a gradiens módszer során. A kisebb batch-méretek gyorsabb frissítéseket eredményeznek, míg a nagyobb batch-méretűek stabilabb frissítéseket biztosítanak. A megfelelő batch-méret kiválasztása lehetővé teszi a hatékony tanulást és a számítások optimalizálását.
+
 ---
 ## A modell betanításának és kiértékelésének lépései validációs halmazzal
 ### 1. Adatok felosztása:
@@ -207,13 +263,14 @@ A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt 
 - **Teszt halmaz (Test Set):** A teszt halmazt a modell végleges teljesítményének objektív értékelésére használjuk. Ezeket az adatokat a tanulási folyamat során nem használjuk fel semmilyen módon, így azok függetlenek a tanulástól és objektív képet adnak a modell teljesítményéről a valóságos környezetben.
 
 ### 2. Tanítás (Training):
->A modellt tanítjuk a tanuló halmazon, azaz a bemeneti adatok és a hozzájuk tartozó címkék alapján. A tanulás során a modell próbálja megtanulni a bemenetek és a címkék közötti összefüggéseket.
+A modellt tanítjuk a tanuló halmazon, azaz a bemeneti adatok és a hozzájuk tartozó címkék alapján. A tanulás során a modell próbálja megtanulni a bemenetek és a címkék közötti összefüggéseket.
 
 ### 3. Validáció (Validation):
->A modell teljesítményét értékeljük a validációs halmazon, amelyet a tanulás során nem használtunk fel. A validációs halmazon történő kiértékelés segítségével finomhangoljuk a modell hiperparamétereit és beállításait annak érdekében, hogy optimalizáljuk a teljesítményt és elkerüljük a túltanulást.
+A modell teljesítményét értékeljük a validációs halmazon, amelyet a tanulás során nem használtunk fel. A validációs halmazon történő kiértékelés segítségével finomhangoljuk a modell hiperparamétereit és beállításait annak érdekében, hogy optimalizáljuk a teljesítményt és elkerüljük a túltanulást.
 
 ### 4. Tesztelés (Testing):
->A végleges modellt kiértékeljük a teszt halmazon, amelyet a tanulás során nem használtunk fel. A tesztelés célja, hogy objektív módon mérjük a modell teljesítményét a valóságos környezetben. A tesztelés eredménye alapján megállapíthatjuk, hogy mennyire jól teljesít a modell a valóságos adatokon.
+A végleges modellt kiértékeljük a teszt halmazon, amelyet a tanulás során nem használtunk fel. A tesztelés célja, hogy objektív módon mérjük a modell teljesítményét a valóságos környezetben. A tesztelés eredménye alapján megállapíthatjuk, hogy mennyire jól teljesít a modell a valóságos adatokon.
+
 ---
 ## Túltanulás kezelése
 ### 1. Mintaelemek számának növelése  
@@ -304,6 +361,9 @@ A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt 
 
 - **Kikapcsolási arány:** Általában a rétegek neuronjainak 20-50%-át véletlenszerűen kikapcsolják a tanítás minden iterációjában.
 - **Kikapcsolási mechanizmus:** A kikapcsolt neuronok nem vesznek részt a számításokban az adott iteráció során, de a következő iterációban újra bekapcsolódhatnak.
+- **Kisebb Paraméterszámú Modell:** Az egyes iterációkban a hálózat kisebb paraméterszámú modellként viselkedik, mivel a kikapcsolt neuronok által hordozott információ nem jut el a következő rétegekhez.
+- **Átlagolás:** A dropout lényegében több különböző neurális hálózatot hoz létre (minden iterációban más és más alhálót), és ezen alhálók átlagolása történik meg a predikció során. Ez az átlagolás stabilabb és robusztusabb általánosítást eredményez. Az az átlagolt modell általában jobb teljesítményt nyújt, mint bármelyik egyedi modell, illetve növeli az általánosítási képességét a modellnek.
+- **Regularizáció:**  A dropout hozzáad egy bizonyos szintű zajt a hálózathoz a tanulás során, ami egyfajta regularizációként működik. Ez megakadályozza, hogy a hálózat túlságosan jól illeszkedjen a tanuló adatokra, így segít a túltanulás megelőzésében.
 
 **Előnyök:**
 - Csökkenti a neurális hálózat túlillesztését és növeli a robusztusságát.
@@ -318,10 +378,118 @@ A hiba gyorsan csökken a tanuló adatokon, de növekszik vagy stagnál a teszt 
 
 ---
 # 5.Tétel
+## Mesterséges neuron modell
+A mesterséges neuron modell az agyban található biológiai neuronok egyszerűsített matematikai modellje.
+Egy mesterséges neuron három fő részből áll:
 
+- **Bemenetek:** A bemeneti értékek, amelyek más neuronok kimenetei vagy a hálózat bemeneti adatpontjai.
+- **Súlyok:** A bemenetekhez rendelt súlyok, amelyek meghatározzák, mennyire fontosak az adott bemenetek.
+- **Összegző és aktivációs függvény:** A bemenetek és súlyok szorzatainak összege egy eltolással (b), amelyet egy aktivációs függvény g(z) segítségével alakítunk át a neuron kimenetére. 
+
+## Teljesen összekötött rétegek (Fully Connected Layers)
+A teljesen összekötött rétegben minden bemeneti neuron össze van kötve minden kimeneti neuronnal. A rétegek közötti kapcsolatok súlyai a tanulási folyamat során módosulnak.
+
+Ha egy rétegben n bemeneti neuron és m kimeneti neuron van, akkor a súlyok mátrixa W mérete m×n, és az eltolási vektor b mérete m. A réteg fő komponensei a következők: 
+- **Bemenetek (x):** Az előző réteg vagy az input adatok kimenetei.
+- **Súlyok mátrixa (W):** A bemenetek és a kimenetek közötti kapcsolatokat reprezentáló súlyok. Ha a bemenet mérete n, és a kimenetek száma m, akkor a súlyok mátrixa W mérete m×n.
+- **Eltolási vektor (b):** A kimeneti neuronok eltolásai, amelyek egy m hosszú vektor.
+- **Aktivációs függvény (g):** A bemenetek és súlyok kombinációjára alkalmazott nemlineáris függvény.
+
+### Hipotézis függvénye  
+A teljesen összekötött réteg hipotézis függvénye leírja, hogyan történik a bemenetek átalakítása a kimenetekké a súlyok és eltolások alkalmazásával. Matematikaian a következőképpen néz ki: **z = Wx + b**
+
+### Aktivációs függvények
+Az aktivációs függvények adják a neurális hálózat nemlinearitását, és számos fajtájuk létezik, melyek közül a leggyakrabban használtak:
+- **Sigmoid**
+- **ReLU**
+
+### Költségfüggvények
+A költségfüggvények mérik a modell előrejelzéseinek és a valós értékek közötti eltéréseket, és segítenek az optimalizációban. A különböző feladatokhoz különböző költségfüggvényeket használunk:
+- **Mean Squared Error (MSE):** Regressziós problémák esetén. Az MSE a tényleges és a prediktált értékek közötti négyzetes különbségek átlaga.
+- **Binary Cross-Entropy (Log Loss):** Bináris klasszifikáció esetén. Az egyes predikciók logaritmusainak összege.
+- **Categorical Cross-Entropy:** Többosztályos klasszifikáció esetén. Az egyes osztályok valószínűségi értékeinek logaritmusainak súlyozott összege.
+
+## Multilayer Perceptron (MLP)
+Az MLP több rétegből álló mesterséges neurális hálózat. Legalább egy rejtett réteggel rendelkezik a bemeneti és kimeneti réteg között. Az MLP felépítése a következő:
+
+- **Bemeneti réteg:** Az adatok bemeneti pontjai.
+- **Rejtett rétegek:** Egy vagy több teljesen összekötött réteg, ahol az aktivációs függvények alkalmazása történik.
+- **Kimeneti réteg:** Az eredmények előállítására szolgáló réteg.
+
+### Paraméterek
+**Súlyok (W):** A rétegek közötti kapcsolatok súlyai.
+**Eltolás (b):** A neuronok eltolási értékei.
+**Aktivációs függvény (g):** A neurális hálózat nemlinearitását biztosítja.
+
+### Hipotézisfüggvény
+Az MLP hipotézisfüggvénye a bemenetekből a kimenetek előállítását írja le. Például, ha két rejtett réteg van:
+![Gradiens módszer](adom5.png "Gradiens módszer") 
+
+### Aktivációs függvények
+Az aktivációs függvények adják a neurális hálózat nemlinearitását, és számos fajtájuk létezik, melyek közül a leggyakrabban használtak:
+- **Sigmoid**
+- **ReLU**
+
+### Költségfüggvények
+A költségfüggvények mérik a modell előrejelzéseinek és a valós értékek közötti eltéréseket, és segítenek az optimalizációban. A különböző feladatokhoz különböző költségfüggvényeket használunk:
+- **Mean Squared Error (MSE):** Regressziós problémák esetén. Az MSE a tényleges és a prediktált értékek közötti négyzetes különbségek átlaga.
+- **Binary Cross-Entropy (Log Loss):** Bináris klasszifikáció esetén. Az egyes predikciók logaritmusainak összege.
+- **Categorical Cross-Entropy:** Többosztályos klasszifikáció esetén. Az egyes osztályok valószínűségi értékeinek logaritmusainak súlyozott összege.
+
+## Skalár És Vektor Alakú Címkék
+### Skalár alakú címke:
+Általában bináris klasszifikációs problémákban használatos.
+Egyetlen numerikus érték, amely egy osztályt jelöl. Például bináris klasszifikációnál az osztályok lehetnek 0 vagy 1. Egyszerűbb adatstruktúrát eredményez.
+
+### Vektor alakú címke:
+Többdimenziós vektor, amely az osztályokat kódolja. Gyakran "one-hot" vektor formájában, ahol az aktuális osztályhoz tartozó elem 1, a többi 0. Szükséges multi-class klasszifikációs feladatoknál, ahol több kategória van. Ez lehetővé teszi a hálózat számára, hogy egyszerre több osztályt is megkülönböztessen.
+
+## Regresszió
+### Mi az a regresszió?
+A regresszió egy gépi tanulási feladat, amelynek célja egy folytonos kimeneti változó előrejelzése. A regressziós modellek megtanulják a bemeneti és kimeneti változók közötti kapcsolatot, hogy új bemenetek esetén pontos előrejelzéseket adjanak.
+
+### Mire jó a regresszió?
+- **Folytonos értékek előrejelzése:** Például házárak, hőmérséklet, bevételek stb.
+- **Kapcsolatok feltárása:** Segít megérteni a bemeneti változók és a kimeneti érték közötti kapcsolatokat.
+
+### Feladatuk:
+- **Lineáris regresszió:** Egyszerű, lineáris kapcsolatokat feltételez a bemenetek és a kimenet között.
+- **Nemlineáris regresszió:** Komplexebb modelleket használ, amelyek nemlineáris kapcsolatokat tanulnak meg.
+
+## Klasszifikáció
+### Mi az a klasszifikáció?
+A klasszifikáció egy gépi tanulási feladat, amelynek célja, hogy bemeneti adatok alapján kategóriákat (osztályokat) hozzárendeljen. A klasszifikációs modellek megtanulják a bemeneti változók és az osztályok közötti kapcsolatot, hogy új bemenetek esetén helyes osztályozást végezzenek.
+
+### Mire jó a klasszifikáció?
+- **Kategóriák felismerése:** Például e-mailek spam/nem spam osztályozása, képek kategorizálása stb.
+- **Döntéshozatal automatizálása:** Segít automatikusan meghozni döntéseket különböző kategóriák alapján.
+
+### Feladatuk:
+- **Bináris klasszifikáció:** Két osztály közötti döntést hoz (pl. igen/nem).
+- **Multi-class klasszifikáció:** Több osztály közötti döntést hoz (pl. képek kategorizálása különböző objektumok alapján).
+
+## Regresszió, Bináris- és Multi-class Klasszifikáció
+### Regresszió
+- **MLP:** A regressziós feladatok esetében az MLP az input változókból készít egy előrejelzést a folytonos kimeneti változó értékére. A kimeneti réteg általában egyetlen neuronból áll, amely kimenetként egy folytonos értéket ad meg.
+- **Teljesen összekötött rétegek:** A teljesen összekötött rétegek hasonlóan működnek, mint az MLP, ahol minden bemeneti csomópont kapcsolódik minden kimeneti csomóponthoz. A kimeneti réteg egyetlen neuronból áll, amely a regressziós probléma megoldásához szükséges kimeneti értéket adja meg.
+
+### Bináris Klasszifikáció
+- **MLP:** Bináris klasszifikáció esetén az MLP kimeneti rétege egyetlen neuronból áll, amelynek a kimenete egy 0 vagy 1 érték, ami megfelel a két osztály (például pozitív és negatív) valószínűségének.
+- **Teljesen összekötött rétegek:** Ugyanaz a helyzet, mint az MLP esetében, ahol a kimeneti réteg egyetlen neuronból áll, amely kimenetként egy 0 vagy 1 értéket ad meg.
+
+### Multi-Class Klasszifikáció
+- **MLP:** A multi-class klasszifikáció esetében az MLP kimeneti rétege több neuronból áll, ahol minden neuron egy adott osztályhoz tartozik. Az egyes neuronok kimenetei a különböző osztályokhoz tartozó valószínűségeket reprezentálják.
+- **Teljesen összekötött rétegek:** A teljesen összekötött rétegek hasonlóképpen működnek, mint az MLP esetében, ahol a kimeneti réteg több neuronból áll, ahol minden neuron egy adott osztályhoz tartozik.
+
+## MLP És Teljesen Összekötött Rétegek Kapcsolata
+Az MLP (Multilayer Perceptron) és a teljesen összekötött réteg gyakorlatilag ugyanazt a neurális hálózati architektúrát jelentik. Az MLP egy olyan neurális háló, amely több rétegű, ahol minden rétegben minden neuron kapcsolódik az előző réteg összes neuronjához. Egy teljesen összekötött réteg (vagy más néven dense réteg) pontosan ezt a kapcsolatot valósítja meg.
+
+>*Másképpen: MLP és a teljesen összekötött réteg közötti kapcsolat az, hogy az MLP egy olyan neurális hálózati architektúra, amely a teljesen összekötött rétegeket használja az információ továbbítására és feldolgozására. A teljesen összekötött rétegek alkotják az MLP strukturális alapját, és lehetővé teszik a neurális hálózatok nagyobb szabadságát a tanulás és az információfeldolgozás terén.*
+
+---
 # 6.Tétel
 ## Számítási gráfok
->A számítási gráfok olyan modellek, amelyek matematikai műveleteket és azok közötti kapcsolatokat ábrázolják gráf szerkezetben. Ezek a gráfok segítenek szemléltetni, hogyan dolgozzák fel a különböző műveleteket egy algoritmus vagy egy rendszer, és lehetővé teszik a hatékony számítások végrehajtását.
+A számítási gráfok olyan modellek, amelyek matematikai műveleteket és azok közötti kapcsolatokat ábrázolják gráf szerkezetben. Ezek a gráfok segítenek szemléltetni, hogyan dolgozzák fel a különböző műveleteket egy algoritmus vagy egy rendszer, és lehetővé teszik a hatékony számítások végrehajtását.
 
 A számítási gráfok hasznosak a gépi tanulásban és a mély tanulásban, mivel lehetővé teszik a neurális hálózatok működésének vizualizációját és azok matematikai műveleteinek hatékony végrehajtását. Két fő típusa létezik.
 
@@ -334,11 +502,11 @@ A számítási gráfok hasznosak a gépi tanulásban és a mély tanulásban, mi
 ## Backpropagation Algoritmus
 A backpropagation algoritmus a mesterséges neurális hálózatok tanításának egyik legfontosabb módszere, amely lehetővé teszi a hálózat súlyainak és paramétereinek optimalizálását a tanító adatok alapján. A backpropagation algoritmus a gradiens módszer egy speciális esete, amely a hálózat hibájának visszaterjesztésén keresztül számolja ki a hálózat súlyainak módosításához szükséges gradienseket.
 
->Elemi műveletek összelkáncolásával, egyszerű részkifejezések
+Elemi műveletek összelkáncolásával, egyszerű részkifejezések
 definiálásával számítási gráfot építünk fel.
 A számítási gráf megadja, hogy egy adott részkifejezés kiértékeléséhez, mely másik részkifejezések kiértékelésére van szükség. *(Lásd: Előadás PDF)*
-- >Csak elemi műveletek deriváltjait számoljuk ki.
-- >Az elemi deriváltakat a gráf élei mentén összeszorozzuk (a
+- Csak elemi műveletek deriváltjait számoljuk ki.
+- Az elemi deriváltakat a gráf élei mentén összeszorozzuk (a
 láncszabály szerint), így kapjuk meg a szükséges összetett
 deriváltakat.
 
@@ -374,6 +542,7 @@ A Multilayer Perceptron (MLP) modell képes összetett mintázatok felismerésé
 **Transzlációs Invariancia Hiánya:**
 - Az MLP nem képes felismerni, ha egy objektum különböző helyeken jelenik meg a képen.
 - Minden pozícióra különböző súlyokat kell tanulnia, ami növeli a modell komplexitását.
+
 ---
 ## Diszkrét Konvolúció és Konvolúciós Réteg
 ### Diszkrét Konvolúció
@@ -477,6 +646,44 @@ A stride az a lépésköz, amelyet a szűrő egy konvolúciós művelet során t
 
 **Stride > 1:**
 - A szűrő több pixellel lép tovább, ami kisebb kimeneti feature map-et eredményez.
+
+## Konvolúciós és au FC réteg közötti kapcsolat
+
+A konvolúciós rétegek (Conv rétegek) és a teljesen összekötött rétegek (Fully Connected, FC rétegek) mind kulcsfontosságú elemei a neurális hálózatoknak, különösen a konvolúciós neurális hálózatoknak (CNN-ek). Ezek a rétegek különböző szerepeket töltenek be a hálózaton belül és különböző típusú tanulást végeznek.
+
+### Konvolúciós Rétegek
+Mit Tanulnak?
+
+- **Jellemzők és Mintázatok:**  
+ A konvolúciós rétegek feladata, hogy a bemeneti adatokból (például képekből) különböző jellemzőket és mintázatokat tanuljanak meg. Az alacsonyabb szintű konvolúciós rétegek egyszerűbb jellemzőket (például éleket, színeket, textúrákat) tanulnak, míg a magasabb szintű rétegek komplexebb mintázatokat és objektumokat ismernek fel.
+- **Helyi Kapcsolatok:**  
+ A konvolúciós rétegek lokálisan kapcsolódnak a bemeneti adatokhoz, ami azt jelenti, hogy a konvolúciós művelet során minden neuron csak egy kis részletét (receptív mező) látja a bemenetnek. Ez lehetővé teszi a térbeli hierarchiák tanulását, ahol az alsóbb szintű jellemzők kombinálásával magasabb szintű jellemzőket hoznak létre.
+
+
+### Teljesen Összekötött (FC) Rétegek
+Mit Tanulnak?
+
+- **Osztályozási Jellemzők:**  
+ A teljesen összekötött rétegek feladata, hogy az előző rétegek által megtanult jellemzőkből végső osztályozási döntéseket hozzanak. Ezek a rétegek a hálózat utolsó szakaszában találhatók, és a bemeneti jellemzőket osztálycímkékké vagy egyéb kimeneti értékekké alakítják.
+- **Globális Kapcsolatok:**  
+ Minden neuron a teljes bemeneti térrel kapcsolatban van, azaz minden neuron összeköttetésben áll az összes bemeneti neuronnal. Ez lehetővé teszi, hogy a teljes kép vagy a jellemzők globális információját felhasználják a döntéshozatalhoz.
+
+### Kapcsolat a Konvolúciós és FC Rétegek Között
+- **Jellemzők Átadása:**  
+ A konvolúciós rétegek a bemeneti adatokból jellemzőket tanulnak meg, amelyeket a hálózat későbbi rétegei használnak fel. A jellemzők hierarchikusan épülnek fel, ahol az alacsonyabb szintű jellemzőkből magasabb szintű, komplexebb jellemzők képződnek.
+- **Flattening:**  
+ A konvolúciós rétegek által előállított jellemzőtérképeket (feature maps) gyakran egy "flattening" lépéssel alakítják át egy egydimenziós vektorba, amelyet a teljesen összekötött rétegek használnak fel.
+- **Osztályozás és Döntéshozatal:**  
+ A teljesen összekötött rétegek ezeket a lapított jellemzővektorokat osztályozási címkékbe vagy egyéb kimeneti értékekké alakítják.
+
+### Összefoglalás
+- **Konvolúciós Rétegek:**  
+ Helyi jellemzőket tanulnak meg a bemeneti adatokból, hierarchikusan építve fel az egyszerű jellemzőktől a komplexebb mintázatokig.
+- **Teljesen Összekötött Rétegek:**  
+ A megtanult jellemzőket használják fel globális döntéshozatalhoz, azaz osztályozási címkék vagy egyéb kimenetek előállításához.  
+
+A két réteg közötti kapcsolat tehát alapvetően a jellemzők hierarchikus tanulásában és azok végső osztályozásában rejlik, ahol a konvolúciós rétegek a jellemzők kinyerését végzik, míg a teljesen összekötött rétegek a végső döntéshozatalt valósítják meg.
+
 ---
 # 8.Tétel
 ## Transfer Learning és lépései
@@ -519,6 +726,28 @@ A tanulási ráta megfelelő beállítása elengedhetetlen. Túl nagy tanulási 
 ### Regularizáció:
 Regularizációs technikák (pl. dropout, L2 regularizáció) használata, hogy elkerüljük a túltanulást az új adatokkal történő finomhangolás során.
 
+## Különbségek Transfer Learningnél Alap Modellhez Képest
+### Előre Tréningezett Modell:
+
+- **Transfer Learning:** Egy előre tréningezett modellt használunk alapként, amely már egy nagy és általános adathalmazon lett betanítva. Ez a modell már jó alapvető jellemzőket tanult meg.
+
+- **Alapmodell Tanítás:** A nulláról indulva, az összes paraméter kezdeti értéke véletlenszerű vagy nulláról indul, így hosszabb ideig tart, amíg a modell konvergál.
+
+### Finomhangolás (Fine-tuning):
+
+- **Transfer Learning:** Csak a felsőbb rétegeket vagy az egész modellt finomhangoljuk. Mivel az alsóbb rétegek már jó jellemzőket tanultak meg, általában kevesebb iteráció szükséges.
+- **Alapmodell Tanítás:** Az egész modell betanítása szükséges, ami hosszabb időt és több iterációt igényel.
+
+### Early Stopping:
+
+- **Transfer Learning:** Mivel az alapvető jellemzők már megtanultak, az early stopping gyakran gyorsabban alkalmazható. Az optimalizálási folyamatot korábban leállíthatjuk, amikor a validációs teljesítmény eléri a platót vagy romlani kezd.
+- **Alapmodell Tanítás:** Több iteráció szükséges a validációs teljesítmény optimalizálásához, és az early stopping is később történhet meg.
+
+### Hiperparaméterek:
+
+- **Transfer Learning:** Gyakran kevesebb hiperparaméter finomhangolást igényel, mivel az előre tréningezett modellek általában jól működnek az alapértelmezett hiperparaméterekkel. A finomhangolás során azonban kisebb tanulási rátát szoktak használni.
+- **Alapmodell Tanítás:** Több időt és kísérletezést igényel a megfelelő hiperparaméterek beállítása, mivel minden paraméter a semmiből kerül beállításra.
+
 ---
 ## Mélyhálók és Problémáik: A Gradiens Skálázódása
 ## A Gradiens Problémák
@@ -548,19 +777,66 @@ A gradiens robbanása akkor következik be, amikor a gradiens értéke a hátraf
 ## Az Instabil Gradiens Probléma és Elkerülése
 
 ### Batch Normalization (Batch Norm)
-- A batch normalization egy olyan technika, amely normalizálja a rétegek bemeneteit egy minibatch-nyi adat alapján. Ez segít stabilizálni és gyorsítani a tanulási folyamatot.
+A batch normalization egy olyan technika, amely normalizálja a rétegek bemeneteit egy minibatch-nyi adat alapján. Ez segít stabilizálni és gyorsítani a tanulási folyamatot.
 - **Működése:** Az egyes rétegek bemeneteit normalizáljuk úgy, hogy azokat egy meghatározott átlagra és szórásra skálázzuk, majd két további paraméter segítségével újrasúlyozzuk és eltoljuk.
-- *Másképp: Normalizálja a rétegek bemeneteit, ami stabilizálja és gyorsítja a tanulási folyamatot. A batch normalization segít fenntartani a gradiens értékeit megfelelő tartományban, csökkentve a gradiens eltűnését és robbanását.*
+
+*Másképp: Normalizálja a rétegek bemeneteit, ami stabilizálja és gyorsítja a tanulási folyamatot. A batch normalization segít fenntartani a gradiens értékeit megfelelő tartományban, csökkentve a gradiens eltűnését és robbanását.*
 
 ### Reziduális Hálók (Residual Networks, ResNets):
-- A reziduális hálók olyan hálózati architektúrák, amelyek reziduális kapcsolatokat (skip connections) használnak. Ezek a kapcsolatok lehetővé teszik, hogy az információ megkerülje az egyik vagy több réteget, közvetlenül egy későbbi rétegbe áramolva.
+A reziduális hálók olyan hálózati architektúrák, amelyek reziduális kapcsolatokat (skip connections) használnak. Ezek a kapcsolatok lehetővé teszik, hogy az információ megkerülje az egyik vagy több réteget, közvetlenül egy későbbi rétegbe áramolva.
+
+A reziduális hálók (ResNet) egy speciális neurális hálózati architektúra, amelyet azért fejlesztettek ki, hogy megoldja a mély hálózatokban fellépő gradiens eltűnés (vanishing gradient) és gradiens robbanás (exploding gradient) problémákat. Ezek az architektúrák residual (maradék) kapcsolatokkal vannak felszerelve, amelyek segítenek a gradiens áramlásában a hálózaton keresztül, különösen nagyon mély hálózatokban.
+
 - **Működése:** Ahelyett, hogy a bemenetet közvetlenül a következő rétegbe küldenénk, hozzáadjuk a bemenetet a réteg kimenetéhez, így a kimenet a bemenet és a réteg kimenetének összegét tartalmazza.
 - **Előnye:** Segít megőrizni a gradiens áramlását a hálózaton keresztül, csökkentve az eltűnő gradiens problémát és lehetővé téve a nagyon mély hálózatok hatékony tanulását.
-- *Másképp: A reziduális hálók bevezetése lehetővé teszi, hogy a gradiens könnyebben haladjon a hálózat mélyebb rétegei felé, elkerülve a gradiens eltűnését. A residual kapcsolatok lehetővé teszik, hogy a hálózat tanulása mélyebb rétegekben is hatékony maradjon.*
+
+*Másképp: A reziduális hálók bevezetése lehetővé teszi, hogy a gradiens könnyebben haladjon a hálózat mélyebb rétegei felé, elkerülve a gradiens eltűnését. A residual kapcsolatok lehetővé teszik, hogy a hálózat tanulása mélyebb rétegekben is hatékony maradjon.*
+
+**Reziduális Kapcsolatok és a Gradiens**  
+A ResNet-ben bevezetett residual kapcsolatok segítenek megoldani ezeket a problémákat. Egy residual blokk a következőképpen néz ki:
+![Négyzetes hibaösszeg](residual.png "Négyzetes hibaösszeg")
+
+Itt *x* a bemenet, 
+F
+(
+x
+,
+{
+W
+i
+}
+)
+F(x,{W<sub> 
+i</sub>
+​	
+ }) pedig a residual függvény, amely tartalmazza a hagyományos konvolúciós rétegeket, aktivációs függvényeket és egyéb műveleteket. A residual blokk kimenete *(y)* a bemenet *(x)* és a residual függvény *(F)* összege.
+
+**Gradiens Visszahaladása Reziduális Hálókban**  
+A gradiens visszahaladásának menete:
+
+- **Kimenet Differenciálása:**  
+ A kimenetet differenciáljuk a bemenet és a residual függvény szerint:
+![Négyzetes hibaösszeg](gradienshaladas.png "Négyzetes hibaösszeg")
+
+- **Gradiens Áramlása:**  
+ A gradiens áramlása során az összegzés miatt a gradiens nem csökken olyan drasztikusan. Az azonos (1) hozzáadása miatt a gradiens áramlása megőrződik, még akkor is, ha kicsi.
+
+- **Gradiens Mérete:**  
+ A gradiens nagyságrendje kevésbé valószínű, hogy eltűnik, mert minden blokkban van egy hozzáadott 1-es érték, ami megőrzi a gradiens nagyságát.
+
+**Miért Stabil a Gradiens Reziduális Hálókban?**  
+- **Identitás Hozzáadása:**  
+ A residual blokkokban a bemenet (x) identitásként van hozzáadva a residual függvény (F) kimenetéhez. Ez az identitás kapcsolat biztosítja, hogy a gradiens áramlása mindig tartalmaz egy közvetlen átviteli útvonalat, amely stabilizálja a gradiens nagyságát.
+- **Megakadályozza a Gradiens Eltűnését:**  
+ Az x hozzáadása azt jelenti, hogy a gradiens soha nem lehet kisebb, mint 1, így elkerülhető a gradiens eltűnése.
+- **Csökkenti a Gradiens Robbanását:**  
+ Az identitás kapcsolat segít megőrizni a gradiens nagyságát, és megakadályozza, hogy túl nagy legyen, így elkerülve a gradiens robbanását.
+
 ---
 # 9.Tétel
 ## Felügyeletlen Tanulás Neurális Hálóval
 A felügyeletlen tanulás olyan gépi tanulási módszer, ahol a modell nem kap előre címkézett adatokat a tanuláshoz. Ehelyett a modellnek magának kell felfedeznie a bemenetek közötti mintákat és struktúrákat. A felügyeletlen tanulás célja, hogy a bemenetek szerkezetét és jellemzőit felismerje anélkül, hogy konkrét kimeneti változókat kapna.
+
 ---
 ## Autoencoder Felépítése
 Az autoencoder egy speciális neurális hálózati architektúra, amelyet gyakran használnak felügyeletlen tanulási feladatokhoz. Az autoencoder célja, hogy a bemenetet egy kisebb dimenziójú reprezentációba tömörítse, majd ebből a reprezentációból újra előállítsa az eredeti bemenetet.
@@ -576,9 +852,15 @@ Az encoder utolsó rétege a kódolt reprezentáció, más néven bottleneck.
 Ez a legkisebb dimenziójú réteg, amely az adat tömörített reprezentációját tartalmazza.
 A cél az, hogy a bottleneck tartalmazza az összes releváns információt az adatból, miközben eltávolítja a redundáns vagy zajos információkat.
 
+ - **Bottleneck mérete nagyobb, mint az inputé?**
+    - **Regularizáció:** A regularizáció alkalmazása az encoder és decoder súlyain, hogy csökkentsük a háló túlzott kapacitását.
+    - **Sparsity Constraint:** Sparsity (ritkaság) kényszer alkalmazása, például a sparse autoencoder esetében, ahol a háló csak a bemenet egy részét aktiválja.
+    - **Dropout:** Dropout technika alkalmazása az encoder rétegein, hogy véletlenszerűen kikapcsoljunk neurális egységeket, így a háló robustabb és kevésbé hajlamos az identitás megtanulására.
+
 **Decoder (Dekódoló):**  
 A kódolt reprezentációt visszaalakítja az eredeti bemeneti adatformába.
 A dekódoló rétegei tükrözik az encoder rétegeit, csak fordított sorrendben, így fokozatosan növelik a dimenziók számát az eredeti méretre.
+
 ---
 **Az autoencoder működését egy egyszerű képfeldolgozási példán keresztül lehet szemléltetni:**  
 - **Bemenet:** 28x28 képpontból álló képek (például MNIST adatbázis képei).  
@@ -588,6 +870,7 @@ A dekódoló rétegei tükrözik az encoder rétegeit, csak fordított sorrendbe
 ---
 ## Autoencoder Megszorítás Jelentősége
 Az autoencoderek hatékonysága nagyrészt az encoder és a decoder közötti rétegek megszorításainak köszönhető. Ezek a megszorítások segítenek az autoencodernek abban, hogy ne egyszerűen "megtanulja" a bemenetek visszaállítását, hanem valóban jelentős mintákat és jellemzőket ismerjen fel.
+
 ---
 ## Két tanult autoencoder fajta  
 ? Sparse, Donising ?
@@ -646,6 +929,11 @@ Az autoencoderek használhatók transfer learningre, ahol az előre betanított 
 **4. Új Modell Betanítása:**
 - Az új modellt finomhangoljuk a konkrét feladatra, például a CIFAR-10 adatbázison betanított encoder rétegekkel egy virágok képadatbázisán végzett klasszifikációs feladatra.
 - A transfer learning segítségével gyorsabban és hatékonyabban érhetünk el jó eredményeket, mivel az encoder rétegek már előzetesen megtanultak általános jellemzőket.
+
+## Az Autoencoderek Miért Működnek: Mátrix Méretek és Eltárolható Információ
+
+Az autoencoderek hatékonysága az encoder és decoder közötti mátrix méretek közötti egyensúlyon alapul. Az encoder rétegei a bemeneti adatokat egy kisebb dimenziójú reprezentációvá alakítják, amely a leglényegesebb információkat tartalmazza. Ha a bottleneck réteg dimenziója megfelelően kicsi, a háló kénytelen megtanulni a bemeneti adatok legrelevánsabb jellemzőit, mivel nincs elegendő kapacitása a redundáns vagy zajos információk eltárolására.
+
 ---
 ## Összefoglalás
 Az autoencoderek erőteljes eszközök a felügyeletlen tanulásban, mivel lehetővé teszik az adatok tömörítését, zajszűrését és jellemzők kinyerését. Az encoder és a decoder közötti megszorítások, mint a sparse és denoising autoencoderek, segítenek abban, hogy a hálózat jelentős mintákat és struktúrákat tanuljon meg. Az autoencoderek széles körben alkalmazhatók adatok tömörítésére, zajszűrésére és transfer learningre, javítva a modellek teljesítményét és hatékonyságát.
