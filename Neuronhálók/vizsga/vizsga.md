@@ -761,6 +761,10 @@ Regularizációs technikák (pl. dropout, L2 regularizáció) használata, hogy 
 - **Transfer Learning:** Gyakran kevesebb hiperparaméter finomhangolást igényel, mivel az előre tréningezett modellek általában jól működnek az alapértelmezett hiperparaméterekkel. A finomhangolás során azonban kisebb tanulási rátát szoktak használni.
 - **Alapmodell Tanítás:** Több időt és kísérletezést igényel a megfelelő hiperparaméterek beállítása, mivel minden paraméter a semmiből kerül beállításra.
 
+### Összességében
+- **Alap modell tanítása:** Az alap modellt általában egy adott feladatra, adathalmazra tanítják. Ez azt jelenti, hogy az alap modellt az adott feladatban való teljesítmény maximalizálása érdekében a teljes adathalmazon betanítják. Az optimalizálás során a modell súlyait a tanító adatokon többször is módosítják annak érdekében, hogy a tanító adatokon minél jobb eredményt érjen el.
+- **Transfer learning:** A transfer learning során az előre betanított modellt általában előzetesen egy nagy adathalmazon, például ImageNet-en vagy más nagy méretű adathalmazon tanítják. A transfer learning során az előre betanított modell súlyait úgynevezett fagyasztott rétegekként használják fel, ami azt jelenti, hogy ezeket a rétegeket nem tanítják újra a céladathoz. Csak az új feladathoz hozzáadott rétegeket tanítják be. Az optimalizálás során általában csak ezeket az új rétegeket tanítják be, míg az előre betanított rétegek súlyait változatlanul hagyják.
+
 ---
 ## Mélyhálók és Problémáik: A Gradiens Skálázódása
 ## A Gradiens Problémák
