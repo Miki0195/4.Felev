@@ -890,7 +890,15 @@ Az autoencoderek hatékonysága nagyrészt az encoder és a decoder közötti r�
 
 ---
 ## Két tanult autoencoder fajta  
-? Sparse, Donising ?
+### Sparse Autoencoder (Ritka Autoencoder):
+- A sparse autoencoder egy olyan autoencoder, amely arra van optimalizálva, hogy a kódolt reprezentáció ritka legyen. Ez azt jelenti, hogy a kódolt reprezentációban a legtöbb elem nulla vagy közel nulla.
+- Ez az optimalizálás általában egy további regularizációs kifejezés hozzáadásával történik a költségfüggvényhez, amely bünteti a nem nullára állított neuronok számát.
+- **Előnye:** Jobb jellemző felismerés, mivel a ritka reprezentációk kiemelik a bemenet legfontosabb elemeit.
+
+### Denoising Autoencoder (Zajszűrő Autoencoder):
+- A denoising autoencoder egy olyan autoencoder, amely zajjal szennyezett bemenetekből tanul. A cél az, hogy a hálózat megtanulja az eredeti, zajmentes adat visszaállítását.
+- A tanulási folyamat során a bemenetekhez zajt adunk, majd az autoencoder megtanulja ezt a zajt eltávolítani, visszaállítva az eredeti adatot.
+- **Előnye:** Robusztusabb jellemző felismerés, mivel a modell megtanulja figyelmen kívül hagyni a zajt és csak a lényegi információra koncentrálni.
 
 ---
 ## Az Autoencoder alkalmazásai
